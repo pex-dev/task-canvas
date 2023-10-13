@@ -1,4 +1,4 @@
-name: "CI Next Build"
+name: 'CI Next Build'
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: "read"
+  contents: 'read'
 
 jobs:
   run-next-build:
