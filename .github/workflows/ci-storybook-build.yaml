@@ -1,4 +1,4 @@
-name: "CI Next Build"
+name: "CI Storybook Build"
 
 on:
   workflow_dispatch:
