@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# task-canvas
 
-## Getting Started
+## Technology
 
-First, run the development server:
+[![Javascript](https://img.shields.io/badge/javascript-language-dimgray?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![React](https://img.shields.io/badge/react-ui_javascript_liblary-dimgray?style=for-the-badge&logo=react)](https://ja.reactjs.org/)
+[![Next.js](https://img.shields.io/badge/next.js-react_framework-dimgray?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![MUI](https://img.shields.io/badge/mui-ui_component_library-dimgray?style=for-the-badge&logo=mui)](https://mui.com/)
+[![Typescript](https://img.shields.io/badge/typescript-javascript_type_definitions-dimgray?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
+[![Webpack](https://img.shields.io/badge/webpack-javascript_bundler-dimgray.svg?style=for-the-badge&logo=webpack)](https://webpack.js.org/)
+
+## Developing
+
+Once you've created a project and installed dependencies with `bun install` (or `pnpm install` or `npm install` or `yarn`), start a development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun run dev
+
+# or start the server and open the app in a new browser tab
+bun run dev -- --open
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
