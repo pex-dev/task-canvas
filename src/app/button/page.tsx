@@ -3,7 +3,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
-export default function ButtonPage() {
+const ButtonPage = () => {
   return (
     <Stack
       spacing={2}
@@ -14,4 +14,6 @@ export default function ButtonPage() {
       <Button variant="outlined">Outlined</Button>
     </Stack>
   );
-}
+};
+
+export default ButtonPage;
