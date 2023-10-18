@@ -20,13 +20,13 @@
     "react-dom": "18"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "7.4.6",
-    "@storybook/addon-interactions": "7.4.6",
-    "@storybook/addon-links": "7.4.6",
+    "@storybook/addon-essentials": "7.5.0",
+    "@storybook/addon-interactions": "7.5.0",
+    "@storybook/addon-links": "7.5.0",
     "@storybook/addon-onboarding": "1.0.8",
-    "@storybook/blocks": "7.4.6",
-    "@storybook/nextjs": "7.4.6",
-    "@storybook/react": "7.4.6",
+    "@storybook/blocks": "7.5.0",
+    "@storybook/nextjs": "7.5.0",
+    "@storybook/react": "7.5.0",
     "@storybook/testing-library": "0.2.2",
     "@types/node": "20",
     "@types/react": "18",
@@ -35,7 +35,7 @@
     "eslint": "8",
     "eslint-config-next": "13.5.5",
     "eslint-plugin-storybook": "0.6.15",
-    "storybook": "7.4.6",
+    "storybook": "7.5.0",
     "typescript": "5"
   }
 }
