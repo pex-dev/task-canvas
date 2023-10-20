@@ -4,7 +4,7 @@ import { Typography as MuiTypography, TypographyProps as MuiTypographyProps } fr
 
 export type TypographyProps = MuiTypographyProps;
 
-const Typography: React.FC<TypographyProps> = (props: TypographyProps) => {
+const Typography: React.FC<TypographyProps> = (props) => {
   return <MuiTypography {...props}>{props.children}</MuiTypography>;
 };
 

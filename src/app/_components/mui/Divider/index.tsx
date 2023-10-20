@@ -4,7 +4,7 @@ import { Divider as MuiDivider, DividerProps as MuiDividerProps } from '@mui/mat
 
 export type DividerProps = MuiDividerProps;
 
-const Divider: React.FC<DividerProps> = (props: DividerProps) => {
+const Divider: React.FC<DividerProps> = (props) => {
   return <MuiDivider {...props} />;
 };
 
