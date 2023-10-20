@@ -4,7 +4,7 @@ import { Checkbox as MuiCheckbox, CheckboxProps as MuiCheckboxProps } from '@mui
 
 export type CheckboxProps = MuiCheckboxProps;
 
-const Checkbox: React.FC<CheckboxProps> = (props: CheckboxProps) => {
+const Checkbox: React.FC<CheckboxProps> = (props) => {
   return <MuiCheckbox {...props} />;
 };
 
