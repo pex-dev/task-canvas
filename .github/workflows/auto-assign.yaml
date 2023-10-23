@@ -1,0 +1,19 @@
+name: Auto Assign Reviewer Action
+
+on:
+  pull_request:
+    types: opened
+
+permissions:
+  pull-requests: write
+  repository-projects: read
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/review-assign-action@v1.0.0
+        with:
+          assignees: ${{ github.actor }}
+
+          reviewers: kamegoro, KARO250827
