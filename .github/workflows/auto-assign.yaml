@@ -1,19 +1,15 @@
-name: Auto Assign Reviewer Action
+name: Auto Assign Author
 
 on:
   pull_request:
-    types: [opened, reopened]
-
-permissions:
-  pull-requests: write
-  repository-projects: read
+    types: [opened]
 
 jobs:
   assign:
+    if: github.actor != 'renovate'
+
+    name: Assign author to PR
     runs-on: ubuntu-latest
     steps:
-      - uses: hkusu/review-assign-action@v1.0.0
-        with:
-          assignees: ${{ github.actor }}
-
-          reviewers: kamegoro, KARO250827
+      - name: Assign author to PR
+        uses: technote-space/assign-author@v1
