@@ -1,9 +1,5 @@
 name: OpenAI Reviewer
 
-permissions:
-  contents: read
-  pull-requests: write
-
 on:
   workflow_dispatch:
   pull_request:
@@ -12,6 +8,10 @@ on:
     types: [created]
   issue_comment:
     types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 concurrency:
   group: ${{ github.repository }}-${{ github.event.number || github.head_ref ||
