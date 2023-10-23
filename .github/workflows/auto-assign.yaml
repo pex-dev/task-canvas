@@ -2,7 +2,7 @@ name: Auto Assign Reviewer Action
 
 on:
   pull_request:
-    types: opened
+    types: [opened, reopened]
 
 permissions:
   pull-requests: write
