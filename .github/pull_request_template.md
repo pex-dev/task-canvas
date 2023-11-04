@@ -1,6 +1,6 @@
 ## 関連 issue
 
-https://github.com/pex-dev/task-canvas/issues/#{issue_no}
+Closes: #番号
 
 ## 作業内容
 
