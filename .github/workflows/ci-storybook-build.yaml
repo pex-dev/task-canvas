@@ -31,10 +31,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: ./../.node-version
+          node-version-file: .node-version
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: |
+          cd frontend
+          npm run build-storybook
