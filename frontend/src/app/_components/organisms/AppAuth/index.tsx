@@ -4,22 +4,23 @@ import React, { useEffect } from 'react';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
-interface AuthProps {
+type Props = {
+  loader?: React.ReactNode;
   children: React.ReactNode;
-}
+};
 
-const Auth: React.FC<AuthProps> = ({ children }) => {
-  const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
-
+const Auth: React.FC<Props> = ({ loader = null, children }) => {
+  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
   useEffect(() => {
-    if (isLoading) return;
-
-    if (!isAuthenticated) {
-      loginWithRedirect();
+    if (isLoading || isAuthenticated) {
+      return;
     }
-  }, [isAuthenticated, loginWithRedirect, isLoading]);
+    (async (): Promise<void> => {
+      await loginWithRedirect();
+    })();
+  }, [isLoading, isAuthenticated, loginWithRedirect]);
 
-  return <div>{isLoading ? 'Loading...' : <>{children}</>}</div>;
+  return <>{isLoading ? loader : isAuthenticated ? children : 'redirecting...'}</>;
 };
 
 export default Auth;
