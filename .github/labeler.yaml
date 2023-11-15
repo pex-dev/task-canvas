@@ -1,4 +1,6 @@
 frontend:
-  - 'src/**/*'
+  - "frontend/src/**/*"
+backend:
+  - "backend/**/*"
 github-actions:
-  - '.github/**/*'
+  - ".github/**/*"
