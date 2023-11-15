@@ -1,0 +1,22 @@
+overwrite: true
+schema: ../backend/graph/*.graphqls
+documents:
+  - ./graphql/mutations/*.graphql
+  - ./graphql/queries/*.graphql
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withComponent: false
+      withHooks: true
+      withHOC: false
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
+config:
+  scalars:
+    Uint64: number
+    Time: string
