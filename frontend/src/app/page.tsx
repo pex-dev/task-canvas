@@ -1,3 +1,5 @@
+'use client';
+
 import Box from './_components/mui/Box';
 import Container from './_components/mui/Container';
 
