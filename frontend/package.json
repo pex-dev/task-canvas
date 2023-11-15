@@ -9,19 +9,30 @@
     "lint": "next lint",
     "format": "npx prettier . --write",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "codegen": "graphql-codegen --config codegen.yaml"
   },
   "dependencies": {
+    "@apollo/client": "3.8.7",
     "@auth0/auth0-react": "2.2.3",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
+    "graphql": "16.8.1",
     "@mui/icons-material": "5.14.18",
     "@mui/material": "5.14.18",
     "next": "14.0.2",
+    "next-http-proxy-middleware": "1.2.6",
     "react": "18",
     "react-dom": "18"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/core": "4.0.0",
+    "@graphql-codegen/introspection": "4.0.0",
+    "@graphql-codegen/plugin-helpers": "5.0.0",
+    "@graphql-codegen/typescript": "4.0.0",
+    "@graphql-codegen/typescript-operations": "4.0.1",
+    "@graphql-codegen/typescript-react-apollo": "4.0.0",
     "@storybook/addon-essentials": "7.5.3",
     "@storybook/addon-interactions": "7.5.3",
     "@storybook/addon-links": "7.5.3",
