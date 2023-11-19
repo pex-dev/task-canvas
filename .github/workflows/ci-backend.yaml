@@ -3,7 +3,7 @@ name: "CI Backend"
 on:
   pull_request:
     paths:
-      - ".github/workflows/backend.yml"
+      - ".github/workflows/backend.yaml"
       - "backend/**"
 
 concurrency:
