@@ -3,6 +3,7 @@ name: "CI Backend"
 on:
   workflow_dispatch:
   pull_request:
+    types: [opened, synchronize, reopened]
     paths:
       - ".github/workflows/ci-backend.yaml"
       - "backend/**"
