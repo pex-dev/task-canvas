@@ -1,0 +1,46 @@
+name: "CI Backend"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/ci-backend.yaml"
+      - "backend/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: "read"
+
+jobs:
+  ci-backend:
+    name: lint
+
+    timeout-minutes: 10
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Golang
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "backend/go.mod"
+
+      - name: Reviewdog
+        uses: reviewdog/action-staticcheck@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          workdir: "./backend/"
+          reporter: github-pr-review
+          filter_mode: nofilter
+          fail_on_error: true
+
+      - uses: Jerome1337/gofmt-action@v1.0.5
+        with:
+          gofmt-path: "./backend"
