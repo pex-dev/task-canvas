@@ -4,3 +4,6 @@ backend:
   - "backend/**/*"
 github-actions:
   - ".github/**/*"
+docs:
+  - "README.md"
+  - "docs/**/*"

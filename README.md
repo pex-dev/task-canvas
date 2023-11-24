@@ -19,3 +19,8 @@ bun run dev
 # or start the server and open the app in a new browser tab
 bun run dev -- --open
 ```
+
+### Upgrade Guide
+
+- [Node.js](./docs/node-upgrade.md)
+- [Golang](./docs//golang-upgrade.md)
