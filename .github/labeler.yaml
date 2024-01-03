@@ -1,9 +1,14 @@
 frontend:
-  - "frontend/src/**/*"
+  - changed-files:
+      - any-glob-to-any-file: "frontend/src/**/*"
 backend:
-  - "backend/**/*"
+  - changed-files:
+      - any-glob-to-any-file: "backend/**/*"
 github-actions:
-  - ".github/**/*"
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
 docs:
-  - "README.md"
-  - "docs/**/*"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "README.md"
+          - "docs/**/*"
