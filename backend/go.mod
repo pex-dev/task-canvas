@@ -3,7 +3,7 @@ module task-canvas
 go 1.21.4
 
 require (
-	github.com/99designs/gqlgen v0.17.42
+	github.com/99designs/gqlgen v0.17.43
 	github.com/vektah/gqlparser/v2 v2.5.11
 )
 
