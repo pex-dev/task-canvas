@@ -33,13 +33,13 @@
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-operations": "4.0.1",
     "@graphql-codegen/typescript-react-apollo": "4.1.0",
-    "@storybook/addon-essentials": "7.6.10",
-    "@storybook/addon-interactions": "7.6.10",
-    "@storybook/addon-links": "7.6.10",
+    "@storybook/addon-essentials": "7.6.12",
+    "@storybook/addon-interactions": "7.6.12",
+    "@storybook/addon-links": "7.6.12",
     "@storybook/addon-onboarding": "1.0.11",
-    "@storybook/blocks": "7.6.10",
-    "@storybook/nextjs": "7.6.10",
-    "@storybook/react": "7.6.10",
+    "@storybook/blocks": "7.6.12",
+    "@storybook/nextjs": "7.6.12",
+    "@storybook/react": "7.6.12",
     "@storybook/testing-library": "0.2.2",
     "@types/node": "20",
     "@types/react": "18",
@@ -48,7 +48,7 @@
     "eslint-config-next": "14.1.0",
     "eslint-plugin-storybook": "0.6.15",
     "prettier": "3.2.4",
-    "storybook": "7.6.10",
+    "storybook": "7.6.12",
     "typescript": "5"
   }
 }
