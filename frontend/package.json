@@ -32,7 +32,7 @@
     "@graphql-codegen/plugin-helpers": "5.0.1",
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-operations": "4.0.1",
-    "@graphql-codegen/typescript-react-apollo": "4.1.0",
+    "@graphql-codegen/typescript-react-apollo": "4.2.0",
     "@storybook/addon-essentials": "7.6.12",
     "@storybook/addon-interactions": "7.6.12",
     "@storybook/addon-links": "7.6.12",
