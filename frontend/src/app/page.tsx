@@ -1,5 +1,6 @@
 import Box from '@/_components/mui/Box';
 import Container from '@/_components/mui/Container';
+import Input from '@/_components/atoms/Input';
 
 const Home = () => {
   return (
@@ -19,9 +20,10 @@ const Home = () => {
             backgroundColor: '#F8F9FA',
             boxShadow: 7,
             borderRadius: 1,
+            padding: 10,
           }}
         >
-          こんにちは
+          <Input />
         </Box>
       </Container>
     </Box>

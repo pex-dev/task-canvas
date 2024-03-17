@@ -4,8 +4,8 @@ import { TextField as MuiTextField, TextFieldProps as MuiTextFieldProps } from '
 
 export type TextFieldProps = MuiTextFieldProps;
 
-const TextField: React.FC<TextFieldProps> = (props) => {
+const TextFiled: React.FC<TextFieldProps> = (props) => {
   return <MuiTextField {...props} />;
 };
 
-export default TextField;
+export default TextFiled;
