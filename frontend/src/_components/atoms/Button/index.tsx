@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import MuiButton, { ButtonProps as MuiButtonProps } from '../../mui/Button';

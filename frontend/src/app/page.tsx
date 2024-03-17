@@ -1,7 +1,5 @@
-'use client';
-
-import Box from './_components/mui/Box';
-import Container from './_components/mui/Container';
+import Box from '@/_components/mui/Box';
+import Container from '@/_components/mui/Container';
 
 const Home = () => {
   return (
@@ -22,7 +20,9 @@ const Home = () => {
             boxShadow: 7,
             borderRadius: 1,
           }}
-        ></Box>
+        >
+          こんにちは
+        </Box>
       </Container>
     </Box>
   );
