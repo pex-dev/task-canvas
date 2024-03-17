@@ -14,10 +14,10 @@
 Once you've created a project and installed dependencies with `bun install` (or `pnpm install` or `npm install` or `yarn`), start a development server:
 
 ```bash
-bun run dev
+npm i
 
 # or start the server and open the app in a new browser tab
-bun run dev -- --open
+npm run dev -- --open
 ```
 
 ### Upgrade Guide
