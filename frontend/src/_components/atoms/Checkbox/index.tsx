@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import MuiCheckbox, { CheckboxProps as MuiCheckboxProps } from '../../mui/Checkbox';
