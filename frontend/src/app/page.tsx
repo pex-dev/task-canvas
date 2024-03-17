@@ -1,8 +1,23 @@
+'use client';
+
+import { useState } from 'react';
 import Box from '@/_components/mui/Box';
 import Container from '@/_components/mui/Container';
-import Input from '@/_components/atoms/Input';
+import Input, { InputProps } from '@/_components/atoms/Input';
+import Button from '@/_components/atoms/Button';
 
 const Home = () => {
+  const [value, setValue] = useState<string>('');
+  const [todos, setTodos] = useState<string[]>([]);
+
+  const handleChange: InputProps['onChange'] = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleCreateTodo = (value: string) => {
+    setTodos([...todos, value]);
+  };
+
   return (
     <Box
       sx={{
@@ -23,7 +38,11 @@ const Home = () => {
             padding: 10,
           }}
         >
-          <Input />
+          <Input onChange={handleChange} />
+          <Button onClick={() => handleCreateTodo(value)}>Add</Button>
+          {todos.map((todo, i) => {
+            return <div key={i}>{todo}</div>;
+          })}
         </Box>
       </Container>
     </Box>
