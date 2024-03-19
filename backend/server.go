@@ -1,28 +1,21 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	"os"
-	"task-canvas/graph"
 
-	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/labstack/echo/v4"
 )
 
-const defaultPort = "8080"
+const defaultPort = ":8080"
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World")
+	})
+	e.GET("/TODO", func(c echo.Context) error {
+		return c.String(http.StatusOK, "TODOが投げられました")
+	})
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
-
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	e.Logger.Fatal(e.Start(defaultPort))
 }
