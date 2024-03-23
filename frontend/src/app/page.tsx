@@ -5,6 +5,7 @@ import Box from '@/_components/mui/Box';
 import Container from '@/_components/mui/Container';
 import Input, { InputProps } from '@/_components/atoms/Input';
 import Button from '@/_components/atoms/Button';
+import Title from '@/_components/molecules/Title';
 
 const Home = () => {
   const [value, setValue] = useState<string>('');
@@ -21,7 +22,7 @@ const Home = () => {
   return (
     <Box
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: '#FFF',
         height: '100vh',
         width: '100vw',
         paddingTop: '60px',
@@ -38,6 +39,15 @@ const Home = () => {
             padding: 10,
           }}
         >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: 4,
+            }}
+          >
+            <Title href="/" />
+          </Box>
           <Input onChange={handleChange} />
           <Button onClick={() => handleCreateTodo(value)}>Add</Button>
           {todos.map((todo, i) => {

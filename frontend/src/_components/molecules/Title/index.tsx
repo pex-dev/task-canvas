@@ -2,40 +2,43 @@ import React from 'react';
 
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-import Box from '../../mui/Box';
-import MuiTypography, { TypographyProps as MuiTypographyProps } from '../../mui/Typography';
+import Link, { LinkProps } from '@/_components/mui/Link';
+import Box from '@/_components/mui/Box';
+import MuiTypography from '@/_components/mui/Typography';
 
-export type TypographyProps = Pick<MuiTypographyProps, 'sx'>;
+export type TitleProps = Pick<LinkProps, 'sx' | 'href'>;
 
-const Title: React.FC<TypographyProps> = ({ sx }) => {
+const Title: React.FC<TitleProps> = ({ sx, href }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-      }}
+    <Link
+      href={href}
+      sx={sx}
     >
-      <CheckBoxIcon
+      <Box
         sx={{
-          color: '#4169e1',
-          fontSize: '60px',
-          marginRight: '6px',
+          display: 'flex',
+          alignItems: 'center',
         }}
-      />
-      <MuiTypography
-        sx={[
-          {
+      >
+        <CheckBoxIcon
+          sx={{
+            color: '#4169e1',
+            fontSize: '60px',
+            marginRight: '6px',
+          }}
+        />
+        <MuiTypography
+          sx={{
             fontSize: '44px',
             color: '#4169e1',
             textDecoration: 'underline',
             textDecorationColor: '#4169e1',
-          },
-          ...(Array.isArray(sx) ? sx : [sx]),
-        ]}
-      >
-        My Todo-s
-      </MuiTypography>
-    </Box>
+          }}
+        >
+          My Todo-s
+        </MuiTypography>
+      </Box>
+    </Link>
   );
 };
 

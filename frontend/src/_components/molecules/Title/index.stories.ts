@@ -1,13 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Typography from '.';
+import Title from '.';
 
 const meta = {
-  component: Typography,
+  component: Title,
   tags: ['autodocs'],
-} satisfies Meta<typeof Typography>;
+} satisfies Meta<typeof Title>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    href: 'https://www.google.co.jp/',
+  },
+};
