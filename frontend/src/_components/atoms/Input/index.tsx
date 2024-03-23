@@ -18,6 +18,7 @@ const Input: React.FC<InputProps> = ({ onChange }) => {
         borderRadius: 0.5,
         boxSizing: 'border-box',
         width: '100%',
+        backgroundColor: '#FFF',
         '& .MuiOutlinedInput-notchedOutline': {
           borderStyle: 'none',
         },
