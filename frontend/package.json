@@ -32,10 +32,7 @@
     "storybook": "8.0.4",
     "typescript": "5",
     "@storybook/addon-essentials": "8.0.4",
-    "@storybook/addon-interactions": "8.0.4",
     "@storybook/addon-links": "8.0.4",
-    "@storybook/addon-onboarding": "8.0.4",
-    "@storybook/blocks": "8.0.4",
     "@storybook/nextjs": "8.0.4",
     "@storybook/react": "8.0.4"
   }
