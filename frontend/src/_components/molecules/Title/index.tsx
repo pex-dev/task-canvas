@@ -4,7 +4,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 import Link, { LinkProps } from '@/_components/mui/Link';
 import Box from '@/_components/mui/Box';
-import MuiTypography from '@/_components/mui/Typography';
+import Typography from '@/_components/mui/Typography';
 
 export type TitleProps = Pick<LinkProps, 'sx' | 'href'>;
 
@@ -27,7 +27,7 @@ const Title: React.FC<TitleProps> = ({ sx, href }) => {
             marginRight: '6px',
           }}
         />
-        <MuiTypography
+        <Typography
           sx={{
             fontSize: '44px',
             color: '#4169e1',
@@ -36,7 +36,7 @@ const Title: React.FC<TitleProps> = ({ sx, href }) => {
           }}
         >
           My Todo-s
-        </MuiTypography>
+        </Typography>
       </Box>
     </Link>
   );
