@@ -7,7 +7,7 @@ import Input, { InputProps } from '@/_components/atoms/Input';
 import Button from '@/_components/atoms/Button';
 import Title from '@/_components/molecules/Title';
 
-const Home = () => {
+const Top = () => {
   const [value, setValue] = useState<string>('');
   const [todos, setTodos] = useState<string[]>([]);
 
@@ -59,4 +59,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Top;
