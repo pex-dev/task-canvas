@@ -58,7 +58,7 @@ const Top = () => {
         <Box
           sx={{
             width: '100%',
-            height: 300,
+            minHeight: 500,
             backgroundColor: '#F8F9FA',
             boxShadow: 7,
             borderRadius: 1,
