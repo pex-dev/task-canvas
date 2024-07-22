@@ -8,6 +8,8 @@ services:
       - "${NEXT_PORT}:3000"
     depends_on:
       - task_canvas_api
+    env_file:
+      - .env
 
   task_canvas_api:
     build:
