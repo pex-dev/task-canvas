@@ -10,6 +10,10 @@ services:
       - task_canvas_api
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /task-canvas/frontend
 
   task_canvas_api:
     build:

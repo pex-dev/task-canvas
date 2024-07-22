@@ -4,11 +4,12 @@ import React from 'react';
 
 import MuiTextField, { TextFieldProps as MuiInputProps } from '../../mui/TextField';
 
-export type InputProps = Pick<MuiInputProps, 'onChange'>;
+export type InputProps = Pick<MuiInputProps, 'onChange' | 'value'>;
 
-const Input: React.FC<InputProps> = ({ onChange }) => {
+const Input: React.FC<InputProps> = ({ onChange, value }) => {
   return (
     <MuiTextField
+      value={value}
       onChange={onChange}
       placeholder="Add new .."
       sx={{
