@@ -24,6 +24,8 @@ const Top = () => {
 
   const handleCreateTodo = (value: string) => {
     setTodos([...todos, { id: Date.now().toString(), completed: false, text: value }]);
+
+    setValue('');
   };
 
   const handleChangeCheckbox = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,8 +74,16 @@ const Top = () => {
           >
             <Title href="/" />
           </Box>
-          <Input onChange={handleChangeText} />
-          <Button onClick={() => handleCreateTodo(value)}>Add</Button>
+          <Input
+            value={value}
+            onChange={handleChangeText}
+          />
+          <Button
+            disabled={!value}
+            onClick={() => handleCreateTodo(value)}
+          >
+            Add
+          </Button>
           {todos.map((todo, i) => {
             return (
               <TodoCard
