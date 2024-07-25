@@ -19,7 +19,9 @@ const Top = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const handleChangeText: InputProps['onChange'] = (event) => {
-    setValue(event.target.value);
+    const inputText = event.target.value;
+    if (inputText.length > 40) return;
+    setValue(inputText);
   };
 
   const handleCreateTodo = (value: string) => {
@@ -74,28 +76,50 @@ const Top = () => {
           >
             <Title href="/" />
           </Box>
-          <Input
-            value={value}
-            onChange={handleChangeText}
-          />
-          <Button
-            disabled={!value}
-            onClick={() => handleCreateTodo(value)}
+          <Box
+            sx={{
+              position: 'relative',
+              marginBottom: 3,
+            }}
           >
-            Add
-          </Button>
-          {todos.map((todo, i) => {
-            return (
-              <TodoCard
-                text={todo.text}
-                checked={todo.completed}
-                onChange={(event) => {
-                  handleChangeCheckbox(todo.id, event);
-                }}
-                key={i}
-              />
-            );
-          })}
+            <Input
+              value={value}
+              onChange={handleChangeText}
+            />
+            <Button
+              sx={{
+                position: 'absolute',
+                top: '10px',
+                right: '20px',
+              }}
+              disabled={!value}
+              onClick={() => handleCreateTodo(value)}
+            >
+              Add
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: 1,
+              borderBottom: 1,
+              opacity: 0.1,
+            }}
+          />
+          <Box sx={{ marginTop: 3 }}>
+            {todos.map((todo, i) => {
+              return (
+                <TodoCard
+                  text={todo.text}
+                  checked={todo.completed}
+                  onChange={(event) => {
+                    handleChangeCheckbox(todo.id, event);
+                  }}
+                  key={i}
+                />
+              );
+            })}
+          </Box>
         </Box>
       </Container>
     </Box>
