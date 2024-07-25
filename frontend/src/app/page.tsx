@@ -20,9 +20,7 @@ const Top = () => {
 
   const handleChangeText: InputProps['onChange'] = (event) => {
     const inputText = event.target.value;
-    if (inputText.length > 40) {
-      return;
-    }
+    if (inputText.length > 40) return;
     setValue(inputText);
   };
 
