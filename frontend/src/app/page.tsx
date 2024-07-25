@@ -105,7 +105,7 @@ const Top = () => {
               borderBottom: 1,
               opacity: 0.1,
             }}
-          ></Box>
+          />
           <Box sx={{ marginTop: 3 }}>
             {todos.map((todo, i) => {
               return (
