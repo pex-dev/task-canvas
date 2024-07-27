@@ -2,22 +2,24 @@ package rest
 
 import (
 	"net/http"
+	"task-canvas/config"
+	db_driver "task-canvas/driver/generated"
+	"task-canvas/gateway"
+	"task-canvas/logger"
+	"task-canvas/useCase"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
 type Todo struct {
-	Id            int
-	Content       string
-	ScheduledDate int
-	Completed     bool
+	Id        string `json:"id"`
+	Content   string `json:"content"`
+	Completed bool   `json:"completed"`
 }
 
-type GetTodosResponse []struct {
-	Id            int    `json:"id"`
-	Content       string `json:"content"`
-	Completed     bool   `json:"completed"`
-	ScheduledDate int    `json:"scheduled_date"`
+type GetTodosResponse struct {
+	Todos []Todo `json:"todos"`
 }
 
 type PostTodosRequest struct {
@@ -26,12 +28,30 @@ type PostTodosRequest struct {
 }
 
 func GetTodos(c echo.Context) error {
-	response := GetTodosResponse{
-		{Id: 1, Content: "TODOアイテムの一つ目", Completed: false, ScheduledDate: 0},
-		{Id: 2, Content: "TODOアイテムの二つ目", Completed: true, ScheduledDate: 0},
-		{Id: 3, Content: "TODOアイテムの三つ目", Completed: false, ScheduledDate: 0},
+	driver := db_driver.New(config.PgPool)
+	gateway := gateway.NewTodoGateway(driver)
+	usecase := useCase.NewGetTodoUseCase(gateway)
+
+	todos, err := usecase.Get(c.Request().Context())
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	return c.JSON(http.StatusOK, response)
+
+	restods := make([]Todo, 0, len(todos))
+	for _, todo := range todos {
+		restods = append(restods, Todo{
+			Id:        uuid.UUID(todo.ID).String(),
+			Content:   todo.Content,
+			Completed: todo.Completed,
+		})
+	}
+
+	res := GetTodosResponse{
+		Todos: restods,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 func PostTodos(c echo.Context) error {
