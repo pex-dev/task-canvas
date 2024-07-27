@@ -53,5 +53,5 @@ jobs:
       - name: Test
         run: |
           cd ./backend
-          go test
+          go test ./...
 
