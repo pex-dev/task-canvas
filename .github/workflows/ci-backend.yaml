@@ -44,3 +44,14 @@ jobs:
       - uses: Jerome1337/gofmt-action@v1.0.5
         with:
           gofmt-path: "./backend"
+
+      - name: Build
+        run: |
+          cd ./backend
+          go build -v ./...
+
+      - name: Test
+        run: |
+          cd ./backend
+          go test
+
