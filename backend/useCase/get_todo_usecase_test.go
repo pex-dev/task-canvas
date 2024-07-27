@@ -19,9 +19,9 @@ func TestGetTodoUseCase_Get(t *testing.T) {
 	mockTodoPort := mock_port.NewMockTodoPort(ctrl)
 
 	todos := []domain.Todo{
-		{ID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true},
-		{ID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true},
-		{ID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true},
+		{ID: domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")), Content: "title1", Completed: true},
+		{ID: domain.TodoId(uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84")), Content: "title2", Completed: true},
+		{ID: domain.TodoId(uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7")), Content: "title3", Completed: true},
 	}
 
 	mockTodoPort.EXPECT().Get(context.Background()).Return(todos, nil)

@@ -27,7 +27,7 @@ func (g *TodoGateway) Get(ctx context.Context) ([]domain.Todo, error) {
 
 	for _, todo := range todos {
 		res = append(res, domain.Todo{
-			ID:        todo.ID,
+			ID:        domain.TodoId(todo.ID),
 			Content:   todo.Content,
 			Completed: todo.Completed,
 		})
