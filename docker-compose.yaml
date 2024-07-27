@@ -19,7 +19,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend:/go/src/app/backend
+      - ./backend:/backend
     ports:
       - "${GO_PORT}:8080"
     networks:
