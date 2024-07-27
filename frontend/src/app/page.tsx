@@ -7,16 +7,12 @@ import Input, { InputProps } from '@/_components/atoms/Input';
 import Button from '@/_components/atoms/Button';
 import Title from '@/_components/molecules/Title';
 import TodoCard, { TodoCardProps } from '@/_components/molecules/TodoCard';
-
-type Todo = {
-  id: string;
-  completed: boolean;
-  text: string;
-};
+import Calender from '@/_components/mui/Calendar';
+import { useTodo } from '@/hooks/useTodo';
 
 const Top = () => {
   const [value, setValue] = useState<string>('');
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { todos, addTodo } = useTodo();
 
   const handleChangeText: InputProps['onChange'] = (event) => {
     const inputText = event.target.value;
@@ -25,26 +21,24 @@ const Top = () => {
   };
 
   const handleCreateTodo = (value: string) => {
-    setTodos([...todos, { id: Date.now().toString(), completed: false, text: value }]);
+    addTodo(value);
 
     setValue('');
   };
 
   const handleChangeCheckbox = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const newChecked = event.target.checked;
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          id: todo.id,
-          completed: newChecked,
-          text: todo.text,
-        };
-      }
-
-      return todo;
-    });
-
-    setTodos(newTodos);
+    // const newChecked = event.target.checked;
+    // const newTodos = todos.map((todo) => {
+    //   if (todo.id === id) {
+    //     return {
+    //       id: todo.id,
+    //       completed: newChecked,
+    //       text: todo.text,
+    //     };
+    //   }
+    //   return todo;
+    // });
+    // setTodos(newTodos);
   };
 
   return (
@@ -86,6 +80,13 @@ const Top = () => {
               value={value}
               onChange={handleChangeText}
             />
+            <Calender
+              sx={{
+                position: 'absolute',
+                top: '15px',
+                right: '90px',
+              }}
+            />
             <Button
               sx={{
                 position: 'absolute',
@@ -110,7 +111,7 @@ const Top = () => {
             {todos.map((todo, i) => {
               return (
                 <TodoCard
-                  text={todo.text}
+                  text={todo.content}
                   checked={todo.completed}
                   onChange={(event) => {
                     handleChangeCheckbox(todo.id, event);
