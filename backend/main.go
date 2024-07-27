@@ -19,8 +19,7 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World")
 	})
-	e.GET("/todos", rest.GetTodos)
-	e.POST("/todos", rest.PostTodos)
+	e.GET("/v1/todos", rest.GetTodos)
 
 	e.Logger.Fatal(e.Start(defaultPort))
 }
