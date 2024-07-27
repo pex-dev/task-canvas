@@ -2,8 +2,10 @@ package domain
 
 import "github.com/google/uuid"
 
+type TodoId uuid.UUID
+
 type Todo struct {
-	ID        uuid.UUID
+	ID        TodoId
 	Content   string
 	Completed bool
 }
