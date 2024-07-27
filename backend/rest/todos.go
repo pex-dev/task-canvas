@@ -28,11 +28,11 @@ type PostTodosRequest struct {
 }
 
 func GetTodos(c echo.Context) error {
-	driver := db_driver.New(config.PgPool)
-	gateway := gateway.NewTodoGateway(driver)
-	usecase := useCase.NewGetTodoUseCase(gateway)
+	todoDriver := db_driver.New(config.PgPool)
+	todoGateway := gateway.NewTodoGateway(todoDriver)
+	todoUseCase := useCase.NewGetTodoUseCase(todoGateway)
 
-	todos, err := usecase.Get(c.Request().Context())
+	todos, err := todoUseCase.Get(c.Request().Context())
 	if err != nil {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
