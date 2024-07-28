@@ -7,6 +7,8 @@ package db_driver
 
 import (
 	"context"
+
+	uuid "github.com/google/uuid"
 )
 
 const findTodo = `-- name: FindTodo :many
@@ -36,4 +38,29 @@ func (q *Queries) FindTodo(ctx context.Context) ([]TaskCanvasTodo, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const insertTodo = `-- name: InsertTodo :exec
+INSERT INTO
+task_canvas.todo (
+  id,
+  content,
+  completed
+)
+VALUES (
+  $1,
+  $2,
+  $3
+)
+`
+
+type InsertTodoParams struct {
+	ID        uuid.UUID `json:"id"`
+	Content   string    `json:"content"`
+	Completed bool      `json:"completed"`
+}
+
+func (q *Queries) InsertTodo(ctx context.Context, arg InsertTodoParams) error {
+	_, err := q.db.Exec(ctx, insertTodo, arg.ID, arg.Content, arg.Completed)
+	return err
 }
