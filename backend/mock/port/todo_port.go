@@ -54,3 +54,17 @@ func (mr *MockTodoPortMockRecorder) Get(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockTodoPort)(nil).Get), ctx)
 }
+
+// Store mocks base method.
+func (m *MockTodoPort) Store(ctx context.Context, todo domain.Todo) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Store", ctx, todo)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Store indicates an expected call of Store.
+func (mr *MockTodoPortMockRecorder) Store(ctx, todo any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockTodoPort)(nil).Store), ctx, todo)
+}
