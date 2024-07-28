@@ -3,6 +3,7 @@ package rest
 import (
 	"net/http"
 	"task-canvas/config"
+	"task-canvas/domain"
 	db_driver "task-canvas/driver/generated"
 	"task-canvas/gateway"
 	"task-canvas/logger"
@@ -23,8 +24,12 @@ type GetTodosResponse struct {
 }
 
 type PostTodosRequest struct {
-	Content       string `json:"content"`
-	ScheduledDate int    `json:"scheduled_date"`
+	Content   string `json:"content"`
+	Completed bool   `json:"completed"`
+}
+
+type PostTodosRequestResponse struct {
+	Id string `json:"id"`
 }
 
 func GetTodos(c echo.Context) error {
@@ -42,8 +47,8 @@ func GetTodos(c echo.Context) error {
 	for _, todo := range todos {
 		restods = append(restods, Todo{
 			Id:        uuid.UUID(todo.ID).String(),
-			Content:   todo.Content,
-			Completed: todo.Completed,
+			Content:   string(todo.Content),
+			Completed: bool(todo.Completed),
 		})
 	}
 
@@ -55,6 +60,29 @@ func GetTodos(c echo.Context) error {
 }
 
 func PostTodos(c echo.Context) error {
-	req := c.Request()
-	return c.Stream(http.StatusOK, req.Header.Get(echo.HeaderContentType), req.Body)
+	reqTodo := new(PostTodosRequest)
+
+	if err := c.Bind(reqTodo); err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	ctx := c.Request().Context()
+
+	todoDriver := db_driver.New(config.PgPool)
+	todoIdGateway := gateway.NewTodoIdGateway()
+	todoGateway := gateway.NewTodoGateway(todoDriver)
+	todoUseCase := useCase.NewStoreTodoUseCase(todoGateway, todoIdGateway)
+
+	todoId, err := todoUseCase.Store(ctx, domain.TodoContent(reqTodo.Content), domain.TodoCompleted(reqTodo.Completed))
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	res := PostTodosRequestResponse{
+		Id: uuid.UUID(todoId).String(),
+	}
+
+	return c.JSON(http.StatusOK, res)
 }

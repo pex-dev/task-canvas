@@ -26,6 +26,7 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World")
 	})
 	e.GET("/v1/todos", rest.GetTodos)
+	e.POST("/v1/todos", rest.PostTodos)
 
 	e.Logger.Fatal(e.Start(defaultPort))
 }
