@@ -5,6 +5,8 @@ import (
 	"task-canvas/domain"
 	db_driver "task-canvas/driver/generated"
 	"task-canvas/port"
+
+	"github.com/google/uuid"
 )
 
 type TodoGateway struct {
@@ -28,10 +30,24 @@ func (g *TodoGateway) Get(ctx context.Context) ([]domain.Todo, error) {
 	for _, todo := range todos {
 		res = append(res, domain.Todo{
 			ID:        domain.TodoId(todo.ID),
-			Content:   todo.Content,
-			Completed: todo.Completed,
+			Content:   domain.TodoContent(todo.Content),
+			Completed: domain.TodoCompleted(todo.Completed),
 		})
 	}
 
 	return res, nil
+}
+
+func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
+	err := g.db_driver.InsertTodo(ctx, db_driver.InsertTodoParams{
+		ID:        uuid.UUID(todo.ID),
+		Content:   string(todo.Content),
+		Completed: bool(todo.Completed),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
