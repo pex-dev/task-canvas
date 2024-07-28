@@ -8,20 +8,14 @@ import (
 	"github.com/google/uuid"
 )
 
-type TodoIdGateway struct {
-	todoIdPort port.TodoIdPort
-}
+type TodoIdGateway struct{}
 
 func NewTodoIdGateway() port.TodoIdPort {
 	return &TodoIdGateway{}
 }
 
 func (g *TodoIdGateway) Generate(ctx context.Context) (domain.TodoId, error) {
-	uuid, err := uuid.NewV6()
-
-	if err != nil {
-		return domain.TodoId{}, err
-	}
+	uuid := uuid.New()
 
 	return domain.TodoId(uuid), nil
 }
