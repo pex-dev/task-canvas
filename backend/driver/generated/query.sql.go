@@ -64,3 +64,23 @@ func (q *Queries) InsertTodo(ctx context.Context, arg InsertTodoParams) error {
 	_, err := q.db.Exec(ctx, insertTodo, arg.ID, arg.Content, arg.Completed)
 	return err
 }
+
+const updateTodo = `-- name: UpdateTodo :exec
+UPDATE task_canvas.todo
+SET
+  content = $2,
+  completed = $3
+WHERE
+  id = $1
+`
+
+type UpdateTodoParams struct {
+	ID        uuid.UUID `json:"id"`
+	Content   string    `json:"content"`
+	Completed bool      `json:"completed"`
+}
+
+func (q *Queries) UpdateTodo(ctx context.Context, arg UpdateTodoParams) error {
+	_, err := q.db.Exec(ctx, updateTodo, arg.ID, arg.Content, arg.Completed)
+	return err
+}
