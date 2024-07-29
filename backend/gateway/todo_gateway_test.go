@@ -122,3 +122,56 @@ func TestTodoGateway_Store(t *testing.T) {
 		})
 	}
 }
+
+func TestTodoGateway_Update(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTodoDriver := mock_db_driver.NewMockQuerier(ctrl)
+	uuid := uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")
+	mockTodoDriver.EXPECT().UpdateTodo(context.Background(), db_driver.UpdateTodoParams{
+		ID:        uuid,
+		Content:   "title1",
+		Completed: true,
+	}).Times(1)
+
+	type fields struct {
+		db_driver db_driver.Querier
+	}
+	type args struct {
+		ctx  context.Context
+		todo domain.Todo
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "Todoの更新",
+			fields: fields{
+				db_driver: mockTodoDriver,
+			},
+			args: args{
+				ctx: context.Background(),
+				todo: domain.Todo{
+					ID:        domain.TodoId(uuid),
+					Content:   "title1",
+					Completed: true,
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &TodoGateway{
+				db_driver: tt.fields.db_driver,
+			}
+			if err := g.Update(tt.args.ctx, tt.args.todo); (err != nil) != tt.wantErr {
+				t.Errorf("TodoGateway.Update() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

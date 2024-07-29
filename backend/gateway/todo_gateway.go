@@ -51,3 +51,17 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 
 	return nil
 }
+
+func (g *TodoGateway) Update(ctx context.Context, todo domain.Todo) error {
+	err := g.db_driver.UpdateTodo(ctx, db_driver.UpdateTodoParams{
+		ID:        uuid.UUID(todo.ID),
+		Content:   string(todo.Content),
+		Completed: bool(todo.Completed),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
