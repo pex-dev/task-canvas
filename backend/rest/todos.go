@@ -28,6 +28,12 @@ type PostTodosRequest struct {
 	Completed bool   `json:"completed"`
 }
 
+type PutTodoRequest struct {
+	Id        string `json:"id" param:"id"`
+	Content   string `json:"content"`
+	Completed bool   `json:"completed"`
+}
+
 type PostTodosRequestResponse struct {
 	Id string `json:"id"`
 }
@@ -85,4 +91,30 @@ func PostTodos(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+func PutTodo(c echo.Context) error {
+	reqTodo := new(PutTodoRequest)
+
+	if err := c.Bind(reqTodo); err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	todoDriver := db_driver.New(config.PgPool)
+	todoGateway := gateway.NewTodoGateway(todoDriver)
+	todoUseCase := useCase.NewUpdateTodoUseCase(todoGateway)
+
+	err := todoUseCase.UpdateTodoUseCase(c.Request().Context(), domain.Todo{
+		ID:        domain.TodoId(uuid.MustParse(reqTodo.Id)),
+		Content:   domain.TodoContent(reqTodo.Content),
+		Completed: domain.TodoCompleted(reqTodo.Completed),
+	})
+
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, nil)
 }
