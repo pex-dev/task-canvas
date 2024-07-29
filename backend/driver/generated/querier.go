@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	FindTodo(ctx context.Context) ([]TaskCanvasTodo, error)
 	InsertTodo(ctx context.Context, arg InsertTodoParams) error
+	UpdateTodo(ctx context.Context, arg UpdateTodoParams) error
 }
 
 var _ Querier = (*Queries)(nil)

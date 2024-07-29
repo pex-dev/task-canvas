@@ -8,4 +8,5 @@ import (
 type TodoPort interface {
 	Get(ctx context.Context) ([]domain.Todo, error)
 	Store(ctx context.Context, todo domain.Todo) error
+	Update(ctx context.Context, todo domain.Todo) error
 }
