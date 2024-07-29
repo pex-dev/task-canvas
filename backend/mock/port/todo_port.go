@@ -68,3 +68,17 @@ func (mr *MockTodoPortMockRecorder) Store(ctx, todo any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockTodoPort)(nil).Store), ctx, todo)
 }
+
+// Update mocks base method.
+func (m *MockTodoPort) Update(ctx context.Context, todo domain.Todo) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", ctx, todo)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockTodoPortMockRecorder) Update(ctx, todo any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockTodoPort)(nil).Update), ctx, todo)
+}
