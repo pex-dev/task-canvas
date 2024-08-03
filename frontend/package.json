@@ -25,7 +25,7 @@
     "@storybook/addon-essentials": "8.2.6",
     "@storybook/addon-links": "8.2.6",
     "@storybook/nextjs": "8.2.6",
-    "@storybook/react": "8.2.6",
+    "@storybook/react": "8.2.7",
     "@storybook/testing-library": "0.2.2",
     "@types/node": "22",
     "@types/react": "18",
