@@ -1,8 +1,13 @@
-import { getTodos as getTodosDriver } from '@/driver';
+import {
+  getTodos as getTodosDriver,
+  createTodo as createTodoDriver,
+  CreateDriverRequest,
+} from '@/driver';
 import { Todo } from '@/domain/todo';
 
 interface TodoGatewayInterface {
   getTodos: () => Promise<Todo[]>;
+  createTodo: (content: Todo['content'], completed: Todo['completed']) => Promise<Todo>;
 }
 
 export default class TodoGateway implements TodoGatewayInterface {
@@ -20,5 +25,22 @@ export default class TodoGateway implements TodoGatewayInterface {
     });
 
     return todos;
+  }
+
+  async createTodo(content: Todo['content'], completed: Todo['completed']): Promise<Todo> {
+    const requestTodo: CreateDriverRequest = {
+      content: content,
+      completed: completed,
+    };
+
+    const driverTodoId = await createTodoDriver(requestTodo);
+
+    const todo: Todo = {
+      id: driverTodoId,
+      content: content,
+      completed: completed,
+    };
+
+    return todo;
   }
 }
