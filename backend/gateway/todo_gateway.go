@@ -3,7 +3,8 @@ package gateway
 import (
 	"context"
 	"task-canvas/domain"
-	db_driver "task-canvas/driver/generated"
+	db_driver "task-canvas/driver"
+	sqlc "task-canvas/driver/generated"
 	"task-canvas/port"
 
 	"github.com/google/uuid"
@@ -39,7 +40,15 @@ func (g *TodoGateway) Get(ctx context.Context) ([]domain.Todo, error) {
 }
 
 func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
-	err := g.db_driver.InsertTodo(ctx, db_driver.InsertTodoParams{
+	tx, err := g.db_driver.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	querier := g.db_driver.WithTx(tx)
+
+	err = querier.InsertTodo(ctx, sqlc.InsertTodoParams{
 		ID:        uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
@@ -49,11 +58,11 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 		return err
 	}
 
-	return nil
+	return tx.Commit(ctx)
 }
 
 func (g *TodoGateway) Update(ctx context.Context, todo domain.Todo) error {
-	err := g.db_driver.UpdateTodo(ctx, db_driver.UpdateTodoParams{
+	err := g.db_driver.UpdateTodo(ctx, sqlc.UpdateTodoParams{
 		ID:        uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
