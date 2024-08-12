@@ -38,6 +38,10 @@ type PostTodosRequestResponse struct {
 	Id string `json:"id"`
 }
 
+type DeleteTodoRequest struct {
+	Id string `param:"id"`
+}
+
 func GetTodos(c echo.Context) error {
 	todoDriver := db_driver.NewQuerier(config.PgPool)
 	todoGateway := gateway.NewTodoGateway(todoDriver)
@@ -113,6 +117,27 @@ func PutTodo(c echo.Context) error {
 
 	if err != nil {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, nil)
+}
+
+func DeleteTodo(c echo.Context) error {
+	reqTodo := new(DeleteTodoRequest)
+
+	if err := c.Bind(reqTodo); err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	todoDriver := db_driver.NewQuerier(config.PgPool)
+	todoGateway := gateway.NewTodoGateway(todoDriver)
+	todoUseCase := useCase.NewDeleteTodoUseCase(todoGateway)
+
+	err := todoUseCase.Delete(c.Request().Context(), domain.TodoId(uuid.MustParse(reqTodo.Id)))
+	if err != nil {
+		logger.Logger.Error("Failed to useCase: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
