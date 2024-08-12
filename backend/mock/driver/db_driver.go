@@ -15,6 +15,7 @@ import (
 	driver "task-canvas/driver"
 	db_driver "task-canvas/driver/generated"
 
+	uuid "github.com/google/uuid"
 	pgx "github.com/jackc/pgx/v5"
 	pgconn "github.com/jackc/pgx/v5/pgconn"
 	gomock "go.uber.org/mock/gomock"
@@ -253,6 +254,20 @@ func (m *MockQuerier) Begin(ctx context.Context) (pgx.Tx, error) {
 func (mr *MockQuerierMockRecorder) Begin(ctx any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Begin", reflect.TypeOf((*MockQuerier)(nil).Begin), ctx)
+}
+
+// DeleteTodo mocks base method.
+func (m *MockQuerier) DeleteTodo(ctx context.Context, id uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTodo", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTodo indicates an expected call of DeleteTodo.
+func (mr *MockQuerierMockRecorder) DeleteTodo(ctx, id any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTodo", reflect.TypeOf((*MockQuerier)(nil).DeleteTodo), ctx, id)
 }
 
 // FindTodo mocks base method.

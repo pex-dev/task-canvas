@@ -74,3 +74,19 @@ func (g *TodoGateway) Update(ctx context.Context, todo domain.Todo) error {
 
 	return nil
 }
+
+func (g *TodoGateway) Delete(ctx context.Context, id domain.TodoId) error {
+	tx, err := g.db_driver.Begin(ctx)
+	if err != nil {
+		return err
+	}
+
+	defer tx.Rollback(ctx)
+	querier := g.db_driver.WithTx(tx)
+	err = querier.DeleteTodo(ctx, uuid.UUID(id))
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit(ctx)
+}
