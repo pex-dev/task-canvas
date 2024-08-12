@@ -4,7 +4,8 @@ import (
 	"context"
 	"reflect"
 	"task-canvas/domain"
-	db_driver "task-canvas/driver/generated"
+	db_driver "task-canvas/driver"
+	sqlc "task-canvas/driver/generated"
 	mock_db_driver "task-canvas/mock/driver"
 	"testing"
 
@@ -16,9 +17,9 @@ func TestTodoGateway_Get(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockTodoDriver := mock_db_driver.NewMockQuerier(ctrl)
+	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
 
-	mockTodoDriver.EXPECT().FindTodo(context.Background()).Return([]db_driver.TaskCanvasTodo{
+	mockDriver.EXPECT().FindTodo(context.Background()).Return([]sqlc.TaskCanvasTodo{
 		{ID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true},
 		{ID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true},
 		{ID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true},
@@ -40,7 +41,7 @@ func TestTodoGateway_Get(t *testing.T) {
 		{
 			name: "Todo一覧の取得",
 			fields: fields{
-				db_driver: mockTodoDriver,
+				db_driver: mockDriver,
 			},
 			args: args{
 				ctx: context.Background(),
@@ -74,17 +75,25 @@ func TestTodoGateway_Store(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockTodoDriver := mock_db_driver.NewMockQuerier(ctrl)
+	ctx := context.Background()
+
+	mockTx := mock_db_driver.NewMockTx(ctrl)
+	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
+	mockDriver.EXPECT().Begin(ctx).Return(mockTx, nil).Times(1)
+	mockTx.EXPECT().Commit(ctx).Return(nil).Times(1)
+	mockTx.EXPECT().Rollback(ctx).Return(nil).Times(1)
+	mockDriver.EXPECT().WithTx(mockTx).Return(mockDriver).Times(1)
+
 	todo := domain.Todo{
 		ID:        domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
 		Content:   "title1",
 		Completed: true,
 	}
-	mockTodoDriver.EXPECT().InsertTodo(context.Background(), db_driver.InsertTodoParams{
+	mockDriver.EXPECT().InsertTodo(context.Background(), sqlc.InsertTodoParams{
 		ID:        uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
-	})
+	}).Times(1)
 
 	type fields struct {
 		db_driver db_driver.Querier
@@ -102,10 +111,10 @@ func TestTodoGateway_Store(t *testing.T) {
 		{
 			name: "Todoの作成",
 			fields: fields{
-				db_driver: mockTodoDriver,
+				db_driver: mockDriver,
 			},
 			args: args{
-				ctx:  context.Background(),
+				ctx:  ctx,
 				todo: todo,
 			},
 			wantErr: false,
@@ -129,7 +138,7 @@ func TestTodoGateway_Update(t *testing.T) {
 
 	mockTodoDriver := mock_db_driver.NewMockQuerier(ctrl)
 	uuid := uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")
-	mockTodoDriver.EXPECT().UpdateTodo(context.Background(), db_driver.UpdateTodoParams{
+	mockTodoDriver.EXPECT().UpdateTodo(context.Background(), sqlc.UpdateTodoParams{
 		ID:        uuid,
 		Content:   "title1",
 		Completed: true,
