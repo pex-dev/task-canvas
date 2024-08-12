@@ -28,3 +28,9 @@ SET
 WHERE
   id = $1
 ;
+
+-- name: DeleteTodo :exec
+DELETE FROM task_canvas.todo
+WHERE
+  id = sqlc.arg(id)::uuid
+;
