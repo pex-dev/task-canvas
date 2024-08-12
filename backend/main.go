@@ -28,6 +28,7 @@ func main() {
 	e.GET("/v1/todos", rest.GetTodos)
 	e.POST("/v1/todos", rest.PostTodos)
 	e.PUT("/v1/todos/:id", rest.PutTodo)
+	e.DELETE("/v1/todos/:id", rest.DeleteTodo)
 
 	e.Logger.Fatal(e.Start(defaultPort))
 }
