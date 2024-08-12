@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"task-canvas/config"
 	"task-canvas/domain"
-	db_driver "task-canvas/driver/generated"
+	db_driver "task-canvas/driver"
 	"task-canvas/gateway"
 	"task-canvas/logger"
 	"task-canvas/useCase"
@@ -39,7 +39,7 @@ type PostTodosRequestResponse struct {
 }
 
 func GetTodos(c echo.Context) error {
-	todoDriver := db_driver.New(config.PgPool)
+	todoDriver := db_driver.NewQuerier(config.PgPool)
 	todoGateway := gateway.NewTodoGateway(todoDriver)
 	todoUseCase := useCase.NewGetTodoUseCase(todoGateway)
 
@@ -75,9 +75,9 @@ func PostTodos(c echo.Context) error {
 
 	ctx := c.Request().Context()
 
-	todoDriver := db_driver.New(config.PgPool)
+	dbDriver := db_driver.NewQuerier(config.PgPool)
 	todoIdGateway := gateway.NewTodoIdGateway()
-	todoGateway := gateway.NewTodoGateway(todoDriver)
+	todoGateway := gateway.NewTodoGateway(dbDriver)
 	todoUseCase := useCase.NewStoreTodoUseCase(todoGateway, todoIdGateway)
 
 	todoId, err := todoUseCase.Store(ctx, domain.TodoContent(reqTodo.Content), domain.TodoCompleted(reqTodo.Completed))
@@ -101,7 +101,7 @@ func PutTodo(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	todoDriver := db_driver.New(config.PgPool)
+	todoDriver := db_driver.NewQuerier(config.PgPool)
 	todoGateway := gateway.NewTodoGateway(todoDriver)
 	todoUseCase := useCase.NewUpdateTodoUseCase(todoGateway)
 
