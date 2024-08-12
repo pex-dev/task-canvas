@@ -184,3 +184,55 @@ func TestTodoGateway_Update(t *testing.T) {
 		})
 	}
 }
+
+func TestTodoGateway_Delete(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	ctx := context.Background()
+
+	mockTx := mock_db_driver.NewMockTx(ctrl)
+	mockTx.EXPECT().Rollback(ctx).Return(nil).Times(1)
+	mockTx.EXPECT().Commit(ctx).Return(nil).Times(1)
+
+	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
+	mockDriver.EXPECT().Begin(ctx).Return(mockTx, nil).Times(1)
+	mockDriver.EXPECT().WithTx(mockTx).Return(mockDriver).Times(1)
+	mockDriver.EXPECT().DeleteTodo(ctx, uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")).Return(nil).Times(1)
+
+	type fields struct {
+		db_driver db_driver.Querier
+	}
+	type args struct {
+		ctx context.Context
+		id  domain.TodoId
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "Todoの削除",
+			fields: fields{
+				db_driver: mockDriver,
+			},
+			args: args{
+				ctx: ctx,
+				id:  domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := &TodoGateway{
+				db_driver: tt.fields.db_driver,
+			}
+			if err := g.Delete(tt.args.ctx, tt.args.id); (err != nil) != tt.wantErr {
+				t.Errorf("TodoGateway.Delete() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
