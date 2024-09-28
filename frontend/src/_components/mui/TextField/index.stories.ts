@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import TextFiled from '.';
+import TextField from '.';
 
 const meta = {
-  component: TextFiled,
+  component: TextField,
   tags: ['autodocs'],
-} satisfies Meta<typeof TextFiled>;
+} satisfies Meta<typeof TextField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
