@@ -1,5 +1,9 @@
-import Auth from '@/_components/organisms/AppAuth';
-import AppHeader from '@/_components/organisms/AppHeader';
+'use client';
+// import Auth from '@/_components/organisms/AppAuth';
+// import AppHeader from '@/_components/organisms/AppHeader';
+
+import theme from '@/styles/theme';
+import { ThemeProvider } from '@mui/material';
 
 export default function RootLayout({
   children,
@@ -8,7 +12,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <ThemeProvider theme={theme}>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
