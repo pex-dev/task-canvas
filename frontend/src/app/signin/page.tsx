@@ -124,7 +124,7 @@ const SignUp = () => {
             disabled={isLoading}
             type="submit"
           >
-            ログイン
+            サインアップ
           </Button>
         )}
       </Stack>

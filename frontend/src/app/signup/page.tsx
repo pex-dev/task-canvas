@@ -136,7 +136,7 @@ const SignUp = () => {
           }}
         >
           <ArrowBackIcon sx={{ color: 'icon.blue', height: 16, wight: 16, mr: 1 }} />
-          ログイン
+          サインアップ
         </Button>
       </Box>
     </RegistrationFormBox>
