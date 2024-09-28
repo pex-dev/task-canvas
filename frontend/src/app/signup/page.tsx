@@ -14,7 +14,7 @@ import Box from '@/_components/mui/Box';
 import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
-import RegistrationFormBox from '@/_components/molecules/RegistrationFormBox';
+import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 
 const TextFieldWithIcon = memo(
   forwardRef<

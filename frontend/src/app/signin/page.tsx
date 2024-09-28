@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
-import RegistrationFormBox from '@/_components/molecules/RegistrationFormBox';
+import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 
 import Box from '@/_components/mui/Box';
 import Button from '@/_components/mui/Button';
