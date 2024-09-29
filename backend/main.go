@@ -22,9 +22,8 @@ func main() {
 
 	middleware.Initlogging(e, logger.Logger)
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World")
-	})
+	e.GET("/v1/systems/ping", rest.Ping)
+	e.POST("/v1/signUp", rest.PostSignUpUsers)
 	e.GET("/v1/todos", rest.GetTodos)
 	e.POST("/v1/todos", rest.PostTodos)
 	e.PUT("/v1/todos/:id", rest.PutTodo)
