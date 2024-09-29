@@ -1,7 +1,7 @@
 CREATE TABLE task_canvas.user (
     id uuid primary key,
     email text not null unique,
-    password text
+    password_hash text not null
 );
 
 CREATE TABLE task_canvas.todo (
@@ -12,7 +12,8 @@ CREATE TABLE task_canvas.todo (
 
 CREATE TABLE task_canvas.user_todo (
     user_id uuid references task_canvas.user(id),
-    todo_id uuid references task_canvas.todo(id)
+    todo_id uuid references task_canvas.todo(id),
+    primary key (user_id, todo_id)
 );
 
 CREATE TABLE task_canvas.tag (
@@ -22,5 +23,6 @@ CREATE TABLE task_canvas.tag (
 
 CREATE TABLE task_canvas.todo_tag (
     todo_id uuid references task_canvas.todo(id),
-    tag_id uuid references task_canvas.tag(id)
+    tag_id uuid references task_canvas.tag(id),
+    primary key (todo_id, tag_id)
 );
