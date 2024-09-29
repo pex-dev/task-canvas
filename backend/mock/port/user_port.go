@@ -10,6 +10,7 @@
 package mock_port
 
 import (
+	context "context"
 	reflect "reflect"
 	domain "task-canvas/domain"
 
@@ -40,15 +41,15 @@ func (m *MockUserPort) EXPECT() *MockUserPortMockRecorder {
 }
 
 // Store mocks base method.
-func (m *MockUserPort) Store(user *domain.User) error {
+func (m *MockUserPort) Store(ctx context.Context, user *domain.User) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Store", user)
+	ret := m.ctrl.Call(m, "Store", ctx, user)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Store indicates an expected call of Store.
-func (mr *MockUserPortMockRecorder) Store(user any) *gomock.Call {
+func (mr *MockUserPortMockRecorder) Store(ctx, user any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockUserPort)(nil).Store), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockUserPort)(nil).Store), ctx, user)
 }

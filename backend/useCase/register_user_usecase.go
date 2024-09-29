@@ -29,7 +29,7 @@ func (u *RegisterUserCase) Exec(ctx context.Context, email domain.Email, passwor
 		PasswordHash: passwordHash,
 	}
 
-	err = u.userPort.Store(&user)
+	err = u.userPort.Store(ctx, &user)
 	if err != nil {
 		return "", err
 	}

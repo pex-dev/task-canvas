@@ -17,6 +17,7 @@ func TestRegisterUserCase_Exec(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
+	ctx := context.Background()
 	mockUserPort := mock_port.NewMockUserPort(ctrl)
 	mockUserId := domain.UserId(uuid.New())
 	patches := gomonkey.ApplyFunc(domain.NewUserId, func() domain.UserId {
@@ -43,7 +44,7 @@ func TestRegisterUserCase_Exec(t *testing.T) {
 		Email:        email,
 		PasswordHash: mockPasswordHash,
 	}
-	mockUserPort.EXPECT().Store(&user).Times(1).Return(nil)
+	mockUserPort.EXPECT().Store(ctx, &user).Times(1).Return(nil)
 
 	type fields struct {
 		userPort port.UserPort
@@ -66,7 +67,7 @@ func TestRegisterUserCase_Exec(t *testing.T) {
 				userPort: mockUserPort,
 			},
 			args: args{
-				ctx:      context.Background(),
+				ctx:      ctx,
 				email:    email,
 				password: password,
 			},
