@@ -34,3 +34,14 @@ DELETE FROM task_canvas.todo
 WHERE
   id = sqlc.arg(id)::uuid
 ;
+
+-- name: InsertUser :exec
+INSERT INTO task_canvas.user (
+  id,
+  email,
+  password_hash
+) VALUES (
+  sqlc.arg(id)::uuid,
+  sqlc.arg(email)::text,
+  sqlc.arg(password_hash)::text
+);

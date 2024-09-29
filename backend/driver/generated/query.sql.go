@@ -76,6 +76,29 @@ func (q *Queries) InsertTodo(ctx context.Context, arg InsertTodoParams) error {
 	return err
 }
 
+const insertUser = `-- name: InsertUser :exec
+INSERT INTO task_canvas.user (
+  id,
+  email,
+  password_hash
+) VALUES (
+  $1::uuid,
+  $2::text,
+  $3::text
+)
+`
+
+type InsertUserParams struct {
+	ID           uuid.UUID `json:"id"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"password_hash"`
+}
+
+func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) error {
+	_, err := q.db.Exec(ctx, insertUser, arg.ID, arg.Email, arg.PasswordHash)
+	return err
+}
+
 const updateTodo = `-- name: UpdateTodo :exec
 UPDATE task_canvas.todo
 SET
