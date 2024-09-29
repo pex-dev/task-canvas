@@ -1,7 +1,7 @@
 CREATE TABLE task_canvas.user (
     id uuid primary key,
     email text not null unique,
-    password text
+    password_hash text not null
 );
 
 CREATE TABLE task_canvas.todo (
