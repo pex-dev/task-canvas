@@ -1,10 +1,16 @@
 package domain
 
-import "github.com/google/uuid"
+import (
+	"errors"
+
+	"github.com/google/uuid"
+)
 
 type UserId uuid.UUID
 
 type Email string
+
+var ErrUserNotFound = errors.New("user not found")
 
 type User struct {
 	Id           UserId
