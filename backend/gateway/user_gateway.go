@@ -21,6 +21,21 @@ func NewUserGateway(db_driver db_driver.Querier) port.UserPort {
 	}
 }
 
+func (g *UserGateway) FindById(ctx context.Context, userId *domain.UserId) (*domain.User, error) {
+	dbUser, err := g.db_driver.FindUserById(ctx, uuid.UUID(*userId))
+	if err != nil {
+		return nil, err
+	}
+
+	user := domain.User{
+		Id:           domain.UserId(dbUser.ID),
+		Email:        domain.Email(dbUser.Email),
+		PasswordHash: domain.PasswordHash(dbUser.PasswordHash),
+	}
+
+	return &user, nil
+}
+
 func (g *UserGateway) Store(ctx context.Context, user *domain.User) error {
 	insertUserParams := sqlc.InsertUserParams{
 		ID:           uuid.UUID(user.Id),
