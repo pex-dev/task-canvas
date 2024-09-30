@@ -40,6 +40,21 @@ func (m *MockUserPort) EXPECT() *MockUserPortMockRecorder {
 	return m.recorder
 }
 
+// FindById mocks base method.
+func (m *MockUserPort) FindById(ctx context.Context, userId *domain.UserId) (*domain.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindById", ctx, userId)
+	ret0, _ := ret[0].(*domain.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindById indicates an expected call of FindById.
+func (mr *MockUserPortMockRecorder) FindById(ctx, userId any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindById", reflect.TypeOf((*MockUserPort)(nil).FindById), ctx, userId)
+}
+
 // Store mocks base method.
 func (m *MockUserPort) Store(ctx context.Context, user *domain.User) error {
 	m.ctrl.T.Helper()
