@@ -24,10 +24,13 @@ func main() {
 
 	e.GET("/v1/systems/ping", rest.Ping)
 	e.POST("/v1/signUp", rest.PostSignUpUsers)
-	e.GET("/v1/todos", rest.GetTodos)
-	e.POST("/v1/todos", rest.PostTodos)
-	e.PUT("/v1/todos/:id", rest.PutTodo)
-	e.DELETE("/v1/todos/:id", rest.DeleteTodo)
+
+	apiGroup := e.Group("/v1")
+	apiGroup.Use(middleware.ValidateJWT)
+	apiGroup.GET("/todos", rest.GetTodos)
+	apiGroup.POST("/todos", rest.PostTodos)
+	apiGroup.PUT("/todos/:id", rest.PutTodo)
+	apiGroup.DELETE("/todos/:id", rest.DeleteTodo)
 
 	e.Logger.Fatal(e.Start(defaultPort))
 }
