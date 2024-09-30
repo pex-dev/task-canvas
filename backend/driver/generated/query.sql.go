@@ -51,6 +51,24 @@ func (q *Queries) FindTodo(ctx context.Context) ([]TaskCanvasTodo, error) {
 	return items, nil
 }
 
+const findUserById = `-- name: FindUserById :one
+SELECT
+  id,
+  email,
+  password_hash
+FROM
+  task_canvas.user
+WHERE
+  id = $1::uuid
+`
+
+func (q *Queries) FindUserById(ctx context.Context, id uuid.UUID) (TaskCanvasUser, error) {
+	row := q.db.QueryRow(ctx, findUserById, id)
+	var i TaskCanvasUser
+	err := row.Scan(&i.ID, &i.Email, &i.PasswordHash)
+	return i, err
+}
+
 const insertTodo = `-- name: InsertTodo :exec
 INSERT INTO
 task_canvas.todo (

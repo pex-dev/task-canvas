@@ -45,3 +45,14 @@ INSERT INTO task_canvas.user (
   sqlc.arg(email)::text,
   sqlc.arg(password_hash)::text
 );
+
+-- name: FindUserById :one
+SELECT
+  id,
+  email,
+  password_hash
+FROM
+  task_canvas.user
+WHERE
+  id = sqlc.arg(id)::uuid
+;
