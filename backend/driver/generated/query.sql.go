@@ -51,6 +51,24 @@ func (q *Queries) FindTodo(ctx context.Context) ([]TaskCanvasTodo, error) {
 	return items, nil
 }
 
+const findUserByEmail = `-- name: FindUserByEmail :one
+SELECT
+  id,
+  email,
+  password_hash
+FROM
+  task_canvas.user
+WHERE
+  email = $1::text
+`
+
+func (q *Queries) FindUserByEmail(ctx context.Context, email string) (TaskCanvasUser, error) {
+	row := q.db.QueryRow(ctx, findUserByEmail, email)
+	var i TaskCanvasUser
+	err := row.Scan(&i.ID, &i.Email, &i.PasswordHash)
+	return i, err
+}
+
 const findUserById = `-- name: FindUserById :one
 SELECT
   id,
