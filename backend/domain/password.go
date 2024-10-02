@@ -10,6 +10,8 @@ type Password string
 
 type PasswordHash string
 
+var ErrPasswordIncorrect = errors.New("password is incorrect")
+
 func (p *Password) Empty() bool {
 	return *p == ""
 }
@@ -25,4 +27,8 @@ func HashPassword(password Password) (PasswordHash, error) {
 	}
 
 	return PasswordHash(hashedPassword), nil
+}
+
+func (ph *PasswordHash) ComparePasswordHash(targetPassword Password) bool {
+	return bcrypt.CompareHashAndPassword([]byte(*ph), []byte(targetPassword)) == nil
 }
