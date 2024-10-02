@@ -56,3 +56,14 @@ FROM
 WHERE
   id = sqlc.arg(id)::uuid
 ;
+
+-- name: FindUserByEmail :one
+SELECT
+  id,
+  email,
+  password_hash
+FROM
+  task_canvas.user
+WHERE
+  email = sqlc.arg(email)::text
+;
