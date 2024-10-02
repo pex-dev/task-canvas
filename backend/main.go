@@ -24,6 +24,7 @@ func main() {
 
 	e.GET("/v1/systems/ping", rest.Ping)
 	e.POST("/v1/signUp", rest.PostSignUpUsers)
+	e.POST("/v1/signIn", rest.PostSignIn)
 
 	apiGroup := e.Group("/v1")
 	apiGroup.Use(middleware.ValidateJWT)

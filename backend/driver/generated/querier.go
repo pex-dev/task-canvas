@@ -13,6 +13,7 @@ import (
 type Querier interface {
 	DeleteTodo(ctx context.Context, id uuid.UUID) error
 	FindTodo(ctx context.Context) ([]TaskCanvasTodo, error)
+	FindUserByEmail(ctx context.Context, email string) (TaskCanvasUser, error)
 	FindUserById(ctx context.Context, id uuid.UUID) (TaskCanvasUser, error)
 	InsertTodo(ctx context.Context, arg InsertTodoParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) error

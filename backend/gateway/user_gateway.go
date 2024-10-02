@@ -36,6 +36,10 @@ func (g *UserGateway) FindById(ctx context.Context, userId *domain.UserId) (*dom
 	return &user, nil
 }
 
+func (g *UserGateway) FindByEmailAndPasswordHash(ctx context.Context, email domain.Email, passwordHash domain.PasswordHash) (*domain.User, error) {
+	return nil, nil
+}
+
 func (g *UserGateway) Store(ctx context.Context, user *domain.User) error {
 	insertUserParams := sqlc.InsertUserParams{
 		ID:           uuid.UUID(user.Id),
@@ -49,4 +53,19 @@ func (g *UserGateway) Store(ctx context.Context, user *domain.User) error {
 	}
 
 	return nil
+}
+
+func (g *UserGateway) FindByEmail(ctx context.Context, email domain.Email) (*domain.User, error) {
+	dbUser, err := g.db_driver.FindUserByEmail(ctx, string(email))
+	if err != nil {
+		return nil, domain.ErrPasswordIncorrect
+	}
+
+	user := domain.User{
+		Id:           domain.UserId(dbUser.ID),
+		Email:        domain.Email(dbUser.Email),
+		PasswordHash: domain.PasswordHash(dbUser.PasswordHash),
+	}
+
+	return &user, nil
 }
