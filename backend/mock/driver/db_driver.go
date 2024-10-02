@@ -285,6 +285,21 @@ func (mr *MockQuerierMockRecorder) FindTodo(ctx any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindTodo", reflect.TypeOf((*MockQuerier)(nil).FindTodo), ctx)
 }
 
+// FindUserByEmail mocks base method.
+func (m *MockQuerier) FindUserByEmail(ctx context.Context, email string) (db_driver.TaskCanvasUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUserByEmail", ctx, email)
+	ret0, _ := ret[0].(db_driver.TaskCanvasUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindUserByEmail indicates an expected call of FindUserByEmail.
+func (mr *MockQuerierMockRecorder) FindUserByEmail(ctx, email any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByEmail", reflect.TypeOf((*MockQuerier)(nil).FindUserByEmail), ctx, email)
+}
+
 // FindUserById mocks base method.
 func (m *MockQuerier) FindUserById(ctx context.Context, id uuid.UUID) (db_driver.TaskCanvasUser, error) {
 	m.ctrl.T.Helper()
