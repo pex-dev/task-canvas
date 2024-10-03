@@ -28,10 +28,10 @@ func main() {
 
 	apiGroup := e.Group("/v1")
 	apiGroup.Use(middleware.ValidateJWT)
-	apiGroup.GET("/todos", rest.GetTodos)
-	apiGroup.POST("/todos", rest.PostTodos)
-	apiGroup.PUT("/todos/:id", rest.PutTodo)
-	apiGroup.DELETE("/todos/:id", rest.DeleteTodo)
+	apiGroup.GET("/todos", rest.GetTodos, middleware.GenerateJwt)
+	apiGroup.POST("/todos", rest.PostTodos, middleware.GenerateJwt)
+	apiGroup.PUT("/todos/:id", rest.PutTodo, middleware.GenerateJwt)
+	apiGroup.DELETE("/todos/:id", rest.DeleteTodo, middleware.GenerateJwt)
 
 	e.Logger.Fatal(e.Start(defaultPort))
 }

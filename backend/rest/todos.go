@@ -66,22 +66,6 @@ func GetTodos(c echo.Context) error {
 		Todos: restods,
 	}
 
-	userIdStr := c.Get("userId").(string)
-	userIdUuid, err := uuid.Parse(string(userIdStr))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	generateJwtUseCase := useCase.NewGenerateJwtUseCase()
-	jwtToken, err := generateJwtUseCase.Exec(domain.UserId(userIdUuid))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	c.Response().Header().Set("Authorization", "Bearer "+string(jwtToken))
-
 	return c.JSON(http.StatusOK, res)
 }
 
@@ -110,22 +94,6 @@ func PostTodos(c echo.Context) error {
 		Id: uuid.UUID(todoId).String(),
 	}
 
-	userIdStr := c.Get("userId").(string)
-	userIdUuid, err := uuid.Parse(string(userIdStr))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	generateJwtUseCase := useCase.NewGenerateJwtUseCase()
-	jwtToken, err := generateJwtUseCase.Exec(domain.UserId(userIdUuid))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	c.Response().Header().Set("Authorization", "Bearer "+string(jwtToken))
-
 	return c.JSON(http.StatusOK, res)
 }
 
@@ -152,22 +120,6 @@ func PutTodo(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	userIdStr := c.Get("userId").(string)
-	userIdUuid, err := uuid.Parse(string(userIdStr))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	generateJwtUseCase := useCase.NewGenerateJwtUseCase()
-	jwtToken, err := generateJwtUseCase.Exec(domain.UserId(userIdUuid))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	c.Response().Header().Set("Authorization", "Bearer "+string(jwtToken))
-
 	return c.JSON(http.StatusOK, nil)
 }
 
@@ -188,22 +140,6 @@ func DeleteTodo(c echo.Context) error {
 		logger.Logger.Error("Failed to useCase: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-
-	userIdStr := c.Get("userId").(string)
-	userIdUuid, err := uuid.Parse(string(userIdStr))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	generateJwtUseCase := useCase.NewGenerateJwtUseCase()
-	jwtToken, err := generateJwtUseCase.Exec(domain.UserId(userIdUuid))
-	if err != nil {
-		logger.Logger.Error("Failed to useCase: " + err.Error())
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	c.Response().Header().Set("Authorization", "Bearer "+string(jwtToken))
 
 	return c.JSON(http.StatusOK, nil)
 }

@@ -9,6 +9,7 @@ import (
 	"task-canvas/gateway"
 	"task-canvas/useCase"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -34,7 +35,7 @@ func ValidateJWT(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid token")
 		}
 
-		c.Set("userId", userId)
+		c.Set("userId", uuid.UUID(userId).String())
 
 		return next(c)
 	}
