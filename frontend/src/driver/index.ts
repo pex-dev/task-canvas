@@ -74,3 +74,4 @@ export const signUp = async (email: string, password: string): Promise<void> => 
     throw new Error('Failed to sign up');
   }
 };
+
