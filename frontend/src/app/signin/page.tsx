@@ -18,6 +18,7 @@ import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
 import useSignIn from '@/hooks/useSignIn';
+import { useSnackbar } from '@/_components/contexts/SnackbarContext';
 
 const TextFieldWithIcon = memo(
   forwardRef<
@@ -62,9 +63,10 @@ type InputProps = {
   password: string;
 };
 
-const SignUp = () => {
+const SignIn = () => {
   const router = useRouter();
   const { signIn } = useSignIn();
+  const { showError, showSuccess } = useSnackbar();
   const { control, handleSubmit } = useForm<InputProps>({
     defaultValues: {
       email: '',
@@ -78,7 +80,9 @@ const SignUp = () => {
       setIsLoading(true);
       await signIn(values);
       router.push('/');
+      showSuccess('ログインに成功しました');
     } catch (error) {
+      showError('ログインに失敗しました');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -142,8 +146,8 @@ const SignUp = () => {
         <Button
           sx={{ width: 'fit-content', fontSize: 12 }}
           variant="text"
-          onClick={async () => {
-            await router.push('/signup');
+          onClick={() => {
+            router.push('/signup');
           }}
         >
           サインアップ
@@ -154,4 +158,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
