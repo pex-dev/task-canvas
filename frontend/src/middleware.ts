@@ -11,10 +11,10 @@ export function middleware(request: NextRequest) {
   return fetch('http://task_canvas_api:8080/v1/verifyAuth', {
     method: 'POST',
     headers: {
-      'Authorization': token.value,
+      Authorization: token.value,
     },
   })
-    .then(response => {
+    .then((response) => {
       if (response.status === 401) {
         return NextResponse.redirect(new URL('/signin', request.url));
       }
