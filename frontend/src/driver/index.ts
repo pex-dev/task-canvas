@@ -74,3 +74,13 @@ export const signUp = async (email: string, password: string): Promise<void> => 
     throw new Error('Failed to sign up');
   }
 };
+
+export const signOut = async (): Promise<void> => {
+  const response = await fetch('http://localhost:3000/api/v1/signout', {
+    method: 'POST',
+  });
+
+  if (response.status !== 200) {
+    throw new Error('Failed to sign out');
+  }
+}
