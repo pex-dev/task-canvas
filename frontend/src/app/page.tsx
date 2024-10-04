@@ -13,10 +13,10 @@ import useSignOut from '@/hooks/useSignOut';
 import { useRouter } from 'next/navigation';
 
 const Top = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [value, setValue] = useState<string>('');
   const { todos, addTodo } = useTodo();
-  const { signOut } = useSignOut()
+  const { signOut } = useSignOut();
 
   const handleChangeText: InputProps['onChange'] = (event) => {
     const inputText = event.target.value;
@@ -57,8 +57,8 @@ const Top = () => {
       <Button
         onClick={() => {
           signOut().then(() => {
-            router.push('/signin')
-          })
+            router.push('/signin');
+          });
         }}
         sx={{
           position: 'absolute',

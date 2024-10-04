@@ -1,4 +1,4 @@
-import { signOut as driverSignOut } from "@/driver";
+import { signOut as driverSignOut } from '@/driver';
 
 const signOut = async (): Promise<void> => {
   try {
@@ -7,6 +7,6 @@ const signOut = async (): Promise<void> => {
     console.error(error);
     throw new Error('Failed to sign out');
   }
-}
+};
 
 export default signOut;

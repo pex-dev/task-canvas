@@ -83,4 +83,4 @@ export const signOut = async (): Promise<void> => {
   if (response.status !== 200) {
     throw new Error('Failed to sign out');
   }
-}
+};

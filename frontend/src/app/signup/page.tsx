@@ -63,7 +63,7 @@ type InputProps = {
 
 const SignUp = () => {
   const router = useRouter();
-  const { showError, showSuccess } = useSnackbar()
+  const { showError, showSuccess } = useSnackbar();
   const { signUp } = useSignUp();
   const { control, handleSubmit, resetField } = useForm<InputProps>({
     defaultValues: {
