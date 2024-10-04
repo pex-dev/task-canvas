@@ -17,6 +17,7 @@ import Box from '@/_components/mui/Box';
 import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
+import useSignIn from '@/hooks/useSignIn';
 
 const TextFieldWithIcon = memo(
   forwardRef<
@@ -63,6 +64,7 @@ type InputProps = {
 
 const SignUp = () => {
   const router = useRouter();
+  const { signIn } = useSignIn();
   const { control, handleSubmit } = useForm<InputProps>({
     defaultValues: {
       email: '',
@@ -71,8 +73,16 @@ const SignUp = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<InputProps> = (value) => {
-    setIsLoading(true);
+  const onSubmit: SubmitHandler<InputProps> = async (values) => {
+    try {
+      setIsLoading(true);
+      await signIn(values);
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
