@@ -18,6 +18,7 @@ func main() {
 	e.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:3000"},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}))
 
 	middleware.Initlogging(e, logger.Logger)
