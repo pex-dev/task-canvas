@@ -16,6 +16,7 @@ import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
 import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 import useSignUp from '@/hooks/useSignUp';
+import { useSnackbar } from '@/_components/contexts/SnackbarContext';
 
 const TextFieldWithIcon = memo(
   forwardRef<
@@ -62,6 +63,7 @@ type InputProps = {
 
 const SignUp = () => {
   const router = useRouter();
+  const { showError, showSuccess } = useSnackbar()
   const { signUp } = useSignUp();
   const { control, handleSubmit, resetField } = useForm<InputProps>({
     defaultValues: {
@@ -76,7 +78,9 @@ const SignUp = () => {
       setIsLoading(true);
       await signUp(values);
       router.push('/signin');
+      showSuccess('アカウント作成に成功しました');
     } catch (e) {
+      showError('アカウント作成に失敗しました');
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -140,8 +144,8 @@ const SignUp = () => {
         <Button
           sx={{ width: 'fit-content', fontSize: 12 }}
           variant="text"
-          onClick={async () => {
-            await router.push('/signin');
+          onClick={() => {
+            router.push('/signin');
           }}
         >
           <ArrowBackIcon sx={{ color: 'icon.blue', height: 16, wight: 16, mr: 1 }} />
