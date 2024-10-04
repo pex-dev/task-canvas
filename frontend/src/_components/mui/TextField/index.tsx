@@ -4,7 +4,12 @@ import { TextField as MuiTextField, TextFieldProps as MuiTextFieldProps } from '
 export type TextFieldProps = MuiTextFieldProps;
 
 const TextFiled = forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
-  return <MuiTextField {...props} ref={ref} />;
+  return (
+    <MuiTextField
+      {...props}
+      ref={ref}
+    />
+  );
 });
 
 TextFiled.displayName = 'TextFiled';

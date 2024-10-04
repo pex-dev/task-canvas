@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "cookies-next";
+import { getCookie, setCookie } from 'cookies-next';
 
 interface TokenInterface {
   setToken: (token: string) => void;
@@ -22,11 +22,11 @@ class Token implements TokenInterface {
 
   public setToken(token: string): void {
     this.token = token;
-    setCookie('token', token)
+    setCookie('token', token);
   }
 
   public getToken(): string | null {
-    const cookie = getCookie('token')
+    const cookie = getCookie('token');
 
     return cookie ? cookie.toString() : null;
   }

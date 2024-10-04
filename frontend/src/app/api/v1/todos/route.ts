@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
 type GetResponseBody = {
   todos: {
@@ -7,12 +7,12 @@ type GetResponseBody = {
     content: string;
     completed: boolean;
   }[];
-}
+};
 
 type PostRequestBody = {
   content: string;
   completed: boolean;
-}
+};
 
 export async function GET() {
   try {
@@ -20,54 +20,57 @@ export async function GET() {
     const currentToken = cookieStore.get('token');
 
     if (currentToken === undefined) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const response = await fetch('http://task_canvas_api:8080/v1/todos',{
+    const response = await fetch('http://task_canvas_api:8080/v1/todos', {
       headers: {
-        'Authorization': currentToken.value,
+        Authorization: currentToken.value,
       },
     });
-    const json = await response.json() as GetResponseBody;
+    const json = (await response.json()) as GetResponseBody;
 
     if (!response.ok) {
-      return NextResponse.json({ message: "Failed to get todos" }, { status: response.status });
+      return NextResponse.json({ message: 'Failed to get todos' }, { status: response.status });
     }
 
     const token = response.headers.get('Authorization');
     if (!token) {
-      return NextResponse.json({ message: "Failed to get todos" }, { status: 400 });
+      return NextResponse.json({ message: 'Failed to get todos' }, { status: 400 });
     }
 
-    cookieStore.set('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    cookieStore.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
     return NextResponse.json(json.todos, { status: 200 });
-  } catch(error) {
-    console.error("Fetch request failed:", error);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  } catch (error) {
+    console.error('Fetch request failed:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as PostRequestBody;
+    const body = (await req.json()) as PostRequestBody;
     const cookieStore = cookies();
-    
+
     if (!body) {
-      return NextResponse.json({ message: "Request body is empty" }, { status: 400 });
+      return NextResponse.json({ message: 'Request body is empty' }, { status: 400 });
     }
     const { content, completed } = body;
 
     const currentToken = cookieStore.get('token');
 
     if (currentToken === undefined) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     const response = await fetch('http://task_canvas_api:8080/v1/todos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': currentToken.value,
+        Authorization: currentToken.value,
       },
       body: JSON.stringify({
         content: content,
@@ -77,18 +80,21 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
-      return NextResponse.json({ message: "Failed to create todo" }, { status: response.status });
+      return NextResponse.json({ message: 'Failed to create todo' }, { status: response.status });
     }
 
     const token = response.headers.get('Authorization');
     if (!token) {
-      return NextResponse.json({ message: "Failed to create todo" }, { status: 400 });
+      return NextResponse.json({ message: 'Failed to create todo' }, { status: 400 });
     }
 
-    cookieStore.set('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    cookieStore.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
     return new NextResponse(null, { status: 200 });
-  } catch(error) {
-    console.error("Fetch request failed:", error);
-    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  } catch (error) {
+    console.error('Fetch request failed:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }

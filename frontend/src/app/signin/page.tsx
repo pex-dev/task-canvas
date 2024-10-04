@@ -75,13 +75,13 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<InputProps> = async (values) => {
     try {
-      setIsLoading(true)
-      await signIn(values)
-      router.push('/')
+      setIsLoading(true);
+      await signIn(values);
+      router.push('/');
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 

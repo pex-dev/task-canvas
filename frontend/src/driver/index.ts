@@ -56,7 +56,7 @@ export const signIn = async (email: string, password: string): Promise<void> => 
   if (response.status !== 200) {
     throw new Error('Failed to sign in');
   }
-}
+};
 
 export const signUp = async (email: string, password: string): Promise<void> => {
   const response = await fetch('http://localhost:3000/api/v1/signup', {
@@ -68,9 +68,9 @@ export const signUp = async (email: string, password: string): Promise<void> => 
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  });
 
   if (response.status !== 200) {
     throw new Error('Failed to sign up');
   }
-}
+};

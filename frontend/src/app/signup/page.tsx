@@ -62,7 +62,7 @@ type InputProps = {
 
 const SignUp = () => {
   const router = useRouter();
-  const { signUp } = useSignUp()
+  const { signUp } = useSignUp();
   const { control, handleSubmit, resetField } = useForm<InputProps>({
     defaultValues: {
       email: '',
@@ -76,7 +76,7 @@ const SignUp = () => {
       setIsLoading(true);
       await signUp(values);
       router.push('/signin');
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     } finally {
       setIsLoading(false);
