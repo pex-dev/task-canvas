@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -15,6 +15,7 @@ import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
 import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
+import useSignUp from '@/hooks/useSignUp';
 
 const TextFieldWithIcon = memo(
   forwardRef<
@@ -55,22 +56,31 @@ const TextFieldWithIcon = memo(
 );
 
 type InputProps = {
-  name: string;
   email: string;
+  password: string;
 };
 
 const SignUp = () => {
   const router = useRouter();
+  const { signUp } = useSignUp()
   const { control, handleSubmit, resetField } = useForm<InputProps>({
     defaultValues: {
-      name: '',
       email: '',
+      password: '',
     },
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<InputProps> = (value) => {
-    setIsLoading(true);
+  const onSubmit: SubmitHandler<InputProps> = async (values) => {
+    try {
+      setIsLoading(true);
+      await signUp(values);
+      router.push('/signin');
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,21 +89,6 @@ const SignUp = () => {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextFieldWithIcon
-              {...field}
-              label="ユーザー名"
-              placeholder="ユーザー名を入力してください"
-              disabled={isLoading}
-              icon={
-                <PersonIcon sx={{ color: 'icon.blue', height: 20, wight: 20, marginRight: 1 }} />
-              }
-            />
-          )}
-        />
         <Controller
           name="email"
           control={control}
@@ -112,6 +107,20 @@ const SignUp = () => {
             />
           )}
         />
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <TextFieldWithIcon
+              {...field}
+              label="パスワード"
+              type="password"
+              placeholder="パスワードを入力してください"
+              disabled={isLoading}
+              icon={<LockIcon sx={{ color: 'icon.blue', height: 20, wight: 20, marginRight: 1 }} />}
+            />
+          )}
+        />
         {isLoading ? (
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <CircularProgress size={32} />
@@ -123,7 +132,7 @@ const SignUp = () => {
             disabled={isLoading}
             type="submit"
           >
-            メールを送信する
+            アカウントを作成する
           </Button>
         )}
       </Stack>
