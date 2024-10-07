@@ -47,7 +47,14 @@ func GetTodos(c echo.Context) error {
 	todoGateway := gateway.NewTodoGateway(todoDriver)
 	todoUseCase := useCase.NewGetTodoUseCase(todoGateway)
 
-	todos, err := todoUseCase.Get(c.Request().Context())
+	userIdStr := c.Get("userId").(string)
+	userIdUuid, err := uuid.Parse(userIdStr)
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	todos, err := todoUseCase.Get(c.Request().Context(), domain.UserId(userIdUuid))
 	if err != nil {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
