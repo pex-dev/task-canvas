@@ -1,15 +1,23 @@
 -- name: FindTodo :many
 SELECT
-  id,
-  content,
-  completed
+  task_canvas.todo.id AS todo_id,
+  task_canvas.todo.content AS content,
+  task_canvas.todo.completed AS completed,
+  task_canvas.user.id AS user_id,
+  task_canvas.user.email AS email,
+  task_canvas.user.password_hash AS password_hash
 FROM
   task_canvas.todo
+INNER JOIN
+  task_canvas.user_todo ON task_canvas.todo.id = task_canvas.user_todo.todo_id
+INNER JOIN
+  task_canvas.user ON task_canvas.user_todo.user_id = task_canvas.user.id
+WHERE
+  task_canvas.user.id = sqlc.arg(user_id)::uuid
 ;
 
 -- name: InsertTodo :exec
-INSERT INTO
-task_canvas.todo (
+INSERT INTO task_canvas.todo (
   id,
   content,
   completed
