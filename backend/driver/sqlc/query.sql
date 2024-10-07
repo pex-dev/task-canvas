@@ -48,9 +48,11 @@ WHERE
 ;
 
 -- name: DeleteTodo :exec
-DELETE FROM task_canvas.todo
-WHERE
-  id = sqlc.arg(id)::uuid
+DELETE FROM task_canvas.user_todo
+USING task_canvas.todo
+WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
+  AND task_canvas.todo.id = sqlc.arg(id)::uuid
+  AND task_canvas.user_todo.user_id = sqlc.arg(user_id)::uuid
 ;
 
 -- name: InsertUser :exec
