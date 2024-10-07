@@ -19,17 +19,20 @@ func TestTodoGateway_Get(t *testing.T) {
 
 	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
 
-	mockDriver.EXPECT().FindTodo(context.Background()).Return([]sqlc.TaskCanvasTodo{
-		{ID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true},
-		{ID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true},
-		{ID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true},
+	userId := domain.NewUserId()
+
+	mockDriver.EXPECT().FindTodo(context.Background(), uuid.UUID(userId)).Return([]sqlc.FindTodoRow{
+		{TodoID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
+		{TodoID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
+		{TodoID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
 	}, nil)
 
 	type fields struct {
 		db_driver db_driver.Querier
 	}
 	type args struct {
-		ctx context.Context
+		ctx    context.Context
+		userId domain.UserId
 	}
 	tests := []struct {
 		name    string
@@ -44,12 +47,13 @@ func TestTodoGateway_Get(t *testing.T) {
 				db_driver: mockDriver,
 			},
 			args: args{
-				ctx: context.Background(),
+				ctx:    context.Background(),
+				userId: userId,
 			},
 			want: []domain.Todo{
-				{ID: domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")), Content: "title1", Completed: true},
-				{ID: domain.TodoId(uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84")), Content: "title2", Completed: true},
-				{ID: domain.TodoId(uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7")), Content: "title3", Completed: true},
+				{ID: domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")), Content: "title1", Completed: true, UserId: userId},
+				{ID: domain.TodoId(uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84")), Content: "title2", Completed: true, UserId: userId},
+				{ID: domain.TodoId(uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7")), Content: "title3", Completed: true, UserId: userId},
 			},
 			wantErr: false,
 		},
@@ -59,7 +63,7 @@ func TestTodoGateway_Get(t *testing.T) {
 			g := &TodoGateway{
 				db_driver: tt.fields.db_driver,
 			}
-			got, err := g.Get(tt.args.ctx)
+			got, err := g.Get(tt.args.ctx, tt.args.userId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TodoGateway.Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
