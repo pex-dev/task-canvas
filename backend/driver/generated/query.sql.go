@@ -12,13 +12,20 @@ import (
 )
 
 const deleteTodo = `-- name: DeleteTodo :exec
-DELETE FROM task_canvas.todo
-WHERE
-  id = $1::uuid
+DELETE FROM task_canvas.user_todo
+USING task_canvas.todo
+WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
+  AND task_canvas.todo.id = $1::uuid
+  AND task_canvas.user_todo.user_id = $2::uuid
 `
 
-func (q *Queries) DeleteTodo(ctx context.Context, id uuid.UUID) error {
-	_, err := q.db.Exec(ctx, deleteTodo, id)
+type DeleteTodoParams struct {
+	ID     uuid.UUID `json:"id"`
+	UserID uuid.UUID `json:"user_id"`
+}
+
+func (q *Queries) DeleteTodo(ctx context.Context, arg DeleteTodoParams) error {
+	_, err := q.db.Exec(ctx, deleteTodo, arg.ID, arg.UserID)
 	return err
 }
 
