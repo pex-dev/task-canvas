@@ -24,11 +24,13 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 
 	todoContent := domain.TodoContent("title1")
 	todoCompleted := domain.TodoCompleted(true)
+	userId := domain.NewUserId()
 
 	todo := domain.Todo{
 		ID:        todoId,
 		Content:   todoContent,
 		Completed: todoCompleted,
+		UserId:    userId,
 	}
 	mockTodoPort.EXPECT().Store(context.Background(), todo).Return(nil)
 
@@ -40,6 +42,7 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 		ctx       context.Context
 		content   domain.TodoContent
 		completed domain.TodoCompleted
+		userId    domain.UserId
 	}
 	tests := []struct {
 		name    string
@@ -58,6 +61,7 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 				ctx:       context.Background(),
 				content:   todoContent,
 				completed: todoCompleted,
+				userId:    userId,
 			},
 			want:    todoId,
 			wantErr: false,
@@ -69,7 +73,7 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 				todoPort:   tt.fields.todoPort,
 				todoIdPort: tt.fields.todoIdPort,
 			}
-			got, err := u.Store(tt.args.ctx, tt.args.content, tt.args.completed)
+			got, err := u.Store(tt.args.ctx, tt.args.content, tt.args.completed, userId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("StoreTodoUseCase.Store() error = %v, wantErr %v", err, tt.wantErr)
 				return
