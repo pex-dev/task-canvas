@@ -45,7 +45,17 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback(ctx)
+
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback(ctx)
+			panic(p)
+		} else if err != nil {
+			tx.Rollback(ctx)
+		} else {
+			err = tx.Commit(ctx)
+		}
+	}()
 
 	querier := g.db_driver.WithTx(tx)
 
@@ -54,12 +64,19 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
 	})
-
 	if err != nil {
 		return err
 	}
 
-	return tx.Commit(ctx)
+	err = querier.InsertUserTodo(ctx, sqlc.InsertUserTodoParams{
+		UserID: uuid.UUID(todo.UserId),
+		TodoID: uuid.UUID(todo.ID),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (g *TodoGateway) Update(ctx context.Context, todo domain.Todo) error {
