@@ -16,8 +16,8 @@ func NewGetTodoUseCase(todoPort port.TodoPort) *GetTodoUseCase {
 	}
 }
 
-func (u *GetTodoUseCase) Get(ctx context.Context) ([]domain.Todo, error) {
-	todos, err := u.todoPort.Get(ctx)
+func (u *GetTodoUseCase) Get(ctx context.Context, userId domain.UserId) ([]domain.Todo, error) {
+	todos, err := u.todoPort.Get(ctx, userId)
 	if err != nil {
 		return nil, err
 	}
