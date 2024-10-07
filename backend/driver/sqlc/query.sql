@@ -23,9 +23,19 @@ INSERT INTO task_canvas.todo (
   completed
 )
 VALUES (
-  $1,
-  $2,
-  $3
+  sqlc.arg(id)::uuid,
+  sqlc.arg(content)::text,
+  sqlc.arg(completed)::boolean
+);
+
+-- name: InsertUserTodo :exec
+INSERT INTO task_canvas.user_todo (
+  user_id,
+  todo_id
+)
+VALUES (
+  sqlc.arg(user_id)::uuid,
+  sqlc.arg(todo_id)::uuid
 );
 
 -- name: UpdateTodo :exec
