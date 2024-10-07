@@ -153,11 +153,18 @@ func DeleteTodo(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
+	userIdStr := c.Get("userId").(string)
+	userIdUuid, err := uuid.Parse(userIdStr)
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
 	todoDriver := db_driver.NewQuerier(config.PgPool)
 	todoGateway := gateway.NewTodoGateway(todoDriver)
 	todoUseCase := useCase.NewDeleteTodoUseCase(todoGateway)
 
-	err := todoUseCase.Delete(c.Request().Context(), domain.TodoId(uuid.MustParse(reqTodo.Id)))
+	err = todoUseCase.Delete(c.Request().Context(), domain.TodoId(uuid.MustParse(reqTodo.Id)), domain.UserId(userIdUuid))
 	if err != nil {
 		logger.Logger.Error("Failed to useCase: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
