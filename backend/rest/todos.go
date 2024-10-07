@@ -119,14 +119,22 @@ func PutTodo(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
+	userIdStr := c.Get("userId").(string)
+	userIdUuid, err := uuid.Parse(userIdStr)
+	if err != nil {
+		logger.Logger.Error("Failed to bind release: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
 	todoDriver := db_driver.NewQuerier(config.PgPool)
 	todoGateway := gateway.NewTodoGateway(todoDriver)
 	todoUseCase := useCase.NewUpdateTodoUseCase(todoGateway)
 
-	err := todoUseCase.UpdateTodoUseCase(c.Request().Context(), domain.Todo{
+	err = todoUseCase.UpdateTodoUseCase(c.Request().Context(), domain.Todo{
 		ID:        domain.TodoId(uuid.MustParse(reqTodo.Id)),
 		Content:   domain.TodoContent(reqTodo.Content),
 		Completed: domain.TodoCompleted(reqTodo.Completed),
+		UserId:    domain.UserId(userIdUuid),
 	})
 
 	if err != nil {
