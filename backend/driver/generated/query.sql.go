@@ -20,12 +20,12 @@ WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
 `
 
 type DeleteTodoParams struct {
-	ID     uuid.UUID `json:"id"`
+	TodoID uuid.UUID `json:"todo_id"`
 	UserID uuid.UUID `json:"user_id"`
 }
 
 func (q *Queries) DeleteTodo(ctx context.Context, arg DeleteTodoParams) error {
-	_, err := q.db.Exec(ctx, deleteTodo, arg.ID, arg.UserID)
+	_, err := q.db.Exec(ctx, deleteTodo, arg.TodoID, arg.UserID)
 	return err
 }
 
@@ -190,19 +190,28 @@ func (q *Queries) InsertUserTodo(ctx context.Context, arg InsertUserTodoParams) 
 const updateTodo = `-- name: UpdateTodo :exec
 UPDATE task_canvas.todo
 SET
-  content = $2,
-  completed = $3
+  content = $1::text,
+  completed = $2::boolean
+FROM task_canvas.user_todo
 WHERE
-  id = $1
+  task_canvas.todo.id = task_canvas.user_todo.todo_id
+  AND task_canvas.todo.id = $3::uuid
+  AND task_canvas.user_todo.user_id = $4::uuid
 `
 
 type UpdateTodoParams struct {
-	ID        uuid.UUID `json:"id"`
 	Content   string    `json:"content"`
 	Completed bool      `json:"completed"`
+	TodoID    uuid.UUID `json:"todo_id"`
+	UserID    uuid.UUID `json:"user_id"`
 }
 
 func (q *Queries) UpdateTodo(ctx context.Context, arg UpdateTodoParams) error {
-	_, err := q.db.Exec(ctx, updateTodo, arg.ID, arg.Content, arg.Completed)
+	_, err := q.db.Exec(ctx, updateTodo,
+		arg.Content,
+		arg.Completed,
+		arg.TodoID,
+		arg.UserID,
+	)
 	return err
 }
