@@ -24,23 +24,48 @@ func (q *Queries) DeleteTodo(ctx context.Context, id uuid.UUID) error {
 
 const findTodo = `-- name: FindTodo :many
 SELECT
-  id,
-  content,
-  completed
+  task_canvas.todo.id AS todo_id,
+  task_canvas.todo.content AS content,
+  task_canvas.todo.completed AS completed,
+  task_canvas.user.id AS user_id,
+  task_canvas.user.email AS email,
+  task_canvas.user.password_hash AS password_hash
 FROM
   task_canvas.todo
+INNER JOIN
+  task_canvas.user_todo ON task_canvas.todo.id = task_canvas.user_todo.todo_id
+INNER JOIN
+  task_canvas.user ON task_canvas.user_todo.user_id = task_canvas.user.id
+WHERE
+  task_canvas.user.id = $1::uuid
 `
 
-func (q *Queries) FindTodo(ctx context.Context) ([]TaskCanvasTodo, error) {
-	rows, err := q.db.Query(ctx, findTodo)
+type FindTodoRow struct {
+	TodoID       uuid.UUID `json:"todo_id"`
+	Content      string    `json:"content"`
+	Completed    bool      `json:"completed"`
+	UserID       uuid.UUID `json:"user_id"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"password_hash"`
+}
+
+func (q *Queries) FindTodo(ctx context.Context, userID uuid.UUID) ([]FindTodoRow, error) {
+	rows, err := q.db.Query(ctx, findTodo, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []TaskCanvasTodo
+	var items []FindTodoRow
 	for rows.Next() {
-		var i TaskCanvasTodo
-		if err := rows.Scan(&i.ID, &i.Content, &i.Completed); err != nil {
+		var i FindTodoRow
+		if err := rows.Scan(
+			&i.TodoID,
+			&i.Content,
+			&i.Completed,
+			&i.UserID,
+			&i.Email,
+			&i.PasswordHash,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -88,8 +113,7 @@ func (q *Queries) FindUserById(ctx context.Context, id uuid.UUID) (TaskCanvasUse
 }
 
 const insertTodo = `-- name: InsertTodo :exec
-INSERT INTO
-task_canvas.todo (
+INSERT INTO task_canvas.todo (
   id,
   content,
   completed
