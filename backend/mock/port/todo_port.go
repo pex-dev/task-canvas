@@ -41,32 +41,32 @@ func (m *MockTodoPort) EXPECT() *MockTodoPortMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockTodoPort) Delete(ctx context.Context, id domain.TodoId) error {
+func (m *MockTodoPort) Delete(ctx context.Context, id domain.TodoId, userId domain.UserId) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", ctx, id)
+	ret := m.ctrl.Call(m, "Delete", ctx, id, userId)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockTodoPortMockRecorder) Delete(ctx, id any) *gomock.Call {
+func (mr *MockTodoPortMockRecorder) Delete(ctx, id, userId any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTodoPort)(nil).Delete), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTodoPort)(nil).Delete), ctx, id, userId)
 }
 
 // Get mocks base method.
-func (m *MockTodoPort) Get(ctx context.Context) ([]domain.Todo, error) {
+func (m *MockTodoPort) Get(ctx context.Context, userId domain.UserId) ([]domain.Todo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", ctx)
+	ret := m.ctrl.Call(m, "Get", ctx, userId)
 	ret0, _ := ret[0].([]domain.Todo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockTodoPortMockRecorder) Get(ctx any) *gomock.Call {
+func (mr *MockTodoPortMockRecorder) Get(ctx, userId any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockTodoPort)(nil).Get), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockTodoPort)(nil).Get), ctx, userId)
 }
 
 // Store mocks base method.

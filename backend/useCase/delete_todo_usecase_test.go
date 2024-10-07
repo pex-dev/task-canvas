@@ -17,16 +17,18 @@ func TestDeleteTodoUseCase_Delete(t *testing.T) {
 
 	ctx := context.Background()
 	todoId := domain.TodoId(uuid.MustParse("F4592CB3-084B-484F-B4EF-9C726091D16D"))
+	userId := domain.NewUserId()
 
 	mockPort := mock_port.NewMockTodoPort(ctrl)
-	mockPort.EXPECT().Delete(ctx, todoId).Return(nil).Times(1)
+	mockPort.EXPECT().Delete(ctx, todoId, userId).Return(nil).Times(1)
 
 	type fields struct {
 		todoPort port.TodoPort
 	}
 	type args struct {
-		ctx context.Context
-		id  domain.TodoId
+		ctx    context.Context
+		todoId domain.TodoId
+		userId domain.UserId
 	}
 	tests := []struct {
 		name    string
@@ -40,8 +42,9 @@ func TestDeleteTodoUseCase_Delete(t *testing.T) {
 				todoPort: mockPort,
 			},
 			args: args{
-				ctx: ctx,
-				id:  todoId,
+				ctx:    ctx,
+				todoId: todoId,
+				userId: userId,
 			},
 			wantErr: false,
 		},
@@ -51,7 +54,7 @@ func TestDeleteTodoUseCase_Delete(t *testing.T) {
 			u := &DeleteTodoUseCase{
 				todoPort: tt.fields.todoPort,
 			}
-			if err := u.Delete(tt.args.ctx, tt.args.id); (err != nil) != tt.wantErr {
+			if err := u.Delete(tt.args.ctx, tt.args.todoId, tt.args.userId); (err != nil) != tt.wantErr {
 				t.Errorf("DeleteTodoUseCase.Delete() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

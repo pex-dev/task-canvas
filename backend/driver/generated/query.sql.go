@@ -12,35 +12,67 @@ import (
 )
 
 const deleteTodo = `-- name: DeleteTodo :exec
-DELETE FROM task_canvas.todo
-WHERE
-  id = $1::uuid
+DELETE FROM task_canvas.user_todo
+USING task_canvas.todo
+WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
+  AND task_canvas.todo.id = $1::uuid
+  AND task_canvas.user_todo.user_id = $2::uuid
 `
 
-func (q *Queries) DeleteTodo(ctx context.Context, id uuid.UUID) error {
-	_, err := q.db.Exec(ctx, deleteTodo, id)
+type DeleteTodoParams struct {
+	TodoID uuid.UUID `json:"todo_id"`
+	UserID uuid.UUID `json:"user_id"`
+}
+
+func (q *Queries) DeleteTodo(ctx context.Context, arg DeleteTodoParams) error {
+	_, err := q.db.Exec(ctx, deleteTodo, arg.TodoID, arg.UserID)
 	return err
 }
 
 const findTodo = `-- name: FindTodo :many
 SELECT
-  id,
-  content,
-  completed
+  task_canvas.todo.id AS todo_id,
+  task_canvas.todo.content AS content,
+  task_canvas.todo.completed AS completed,
+  task_canvas.user.id AS user_id,
+  task_canvas.user.email AS email,
+  task_canvas.user.password_hash AS password_hash
 FROM
   task_canvas.todo
+INNER JOIN
+  task_canvas.user_todo ON task_canvas.todo.id = task_canvas.user_todo.todo_id
+INNER JOIN
+  task_canvas.user ON task_canvas.user_todo.user_id = task_canvas.user.id
+WHERE
+  task_canvas.user.id = $1::uuid
 `
 
-func (q *Queries) FindTodo(ctx context.Context) ([]TaskCanvasTodo, error) {
-	rows, err := q.db.Query(ctx, findTodo)
+type FindTodoRow struct {
+	TodoID       uuid.UUID `json:"todo_id"`
+	Content      string    `json:"content"`
+	Completed    bool      `json:"completed"`
+	UserID       uuid.UUID `json:"user_id"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"password_hash"`
+}
+
+func (q *Queries) FindTodo(ctx context.Context, userID uuid.UUID) ([]FindTodoRow, error) {
+	rows, err := q.db.Query(ctx, findTodo, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []TaskCanvasTodo
+	var items []FindTodoRow
 	for rows.Next() {
-		var i TaskCanvasTodo
-		if err := rows.Scan(&i.ID, &i.Content, &i.Completed); err != nil {
+		var i FindTodoRow
+		if err := rows.Scan(
+			&i.TodoID,
+			&i.Content,
+			&i.Completed,
+			&i.UserID,
+			&i.Email,
+			&i.PasswordHash,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -88,16 +120,15 @@ func (q *Queries) FindUserById(ctx context.Context, id uuid.UUID) (TaskCanvasUse
 }
 
 const insertTodo = `-- name: InsertTodo :exec
-INSERT INTO
-task_canvas.todo (
+INSERT INTO task_canvas.todo (
   id,
   content,
   completed
 )
 VALUES (
-  $1,
-  $2,
-  $3
+  $1::uuid,
+  $2::text,
+  $3::boolean
 )
 `
 
@@ -135,22 +166,52 @@ func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) error {
 	return err
 }
 
+const insertUserTodo = `-- name: InsertUserTodo :exec
+INSERT INTO task_canvas.user_todo (
+  user_id,
+  todo_id
+)
+VALUES (
+  $1::uuid,
+  $2::uuid
+)
+`
+
+type InsertUserTodoParams struct {
+	UserID uuid.UUID `json:"user_id"`
+	TodoID uuid.UUID `json:"todo_id"`
+}
+
+func (q *Queries) InsertUserTodo(ctx context.Context, arg InsertUserTodoParams) error {
+	_, err := q.db.Exec(ctx, insertUserTodo, arg.UserID, arg.TodoID)
+	return err
+}
+
 const updateTodo = `-- name: UpdateTodo :exec
 UPDATE task_canvas.todo
 SET
-  content = $2,
-  completed = $3
+  content = $1::text,
+  completed = $2::boolean
+FROM task_canvas.user_todo
 WHERE
-  id = $1
+  task_canvas.todo.id = task_canvas.user_todo.todo_id
+  AND task_canvas.todo.id = $3::uuid
+  AND task_canvas.user_todo.user_id = $4::uuid
 `
 
 type UpdateTodoParams struct {
-	ID        uuid.UUID `json:"id"`
 	Content   string    `json:"content"`
 	Completed bool      `json:"completed"`
+	TodoID    uuid.UUID `json:"todo_id"`
+	UserID    uuid.UUID `json:"user_id"`
 }
 
 func (q *Queries) UpdateTodo(ctx context.Context, arg UpdateTodoParams) error {
-	_, err := q.db.Exec(ctx, updateTodo, arg.ID, arg.Content, arg.Completed)
+	_, err := q.db.Exec(ctx, updateTodo,
+		arg.Content,
+		arg.Completed,
+		arg.TodoID,
+		arg.UserID,
+	)
 	return err
 }
