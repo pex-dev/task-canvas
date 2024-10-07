@@ -18,7 +18,7 @@ func NewStoreTodoUseCase(todoPort port.TodoPort, todoIdPort port.TodoIdPort) *St
 	}
 }
 
-func (u *StoreTodoUseCase) Store(ctx context.Context, content domain.TodoContent, completed domain.TodoCompleted) (domain.TodoId, error) {
+func (u *StoreTodoUseCase) Store(ctx context.Context, content domain.TodoContent, completed domain.TodoCompleted, userId domain.UserId) (domain.TodoId, error) {
 	todoId, err := u.todoIdPort.Generate(ctx)
 	if err != nil {
 		return domain.TodoId{}, err
@@ -28,6 +28,7 @@ func (u *StoreTodoUseCase) Store(ctx context.Context, content domain.TodoContent
 		ID:        todoId,
 		Content:   content,
 		Completed: completed,
+		UserId:    userId,
 	})
 
 	if err != nil {
