@@ -20,8 +20,8 @@ func NewTodoGateway(db_driver db_driver.Querier) port.TodoPort {
 	}
 }
 
-func (g *TodoGateway) Get(ctx context.Context) ([]domain.Todo, error) {
-	todos, err := g.db_driver.FindTodo(ctx)
+func (g *TodoGateway) Get(ctx context.Context, userId domain.UserId) ([]domain.Todo, error) {
+	todos, err := g.db_driver.FindTodo(ctx, uuid.UUID(userId))
 	if err != nil {
 		return nil, err
 	}
@@ -30,9 +30,10 @@ func (g *TodoGateway) Get(ctx context.Context) ([]domain.Todo, error) {
 
 	for _, todo := range todos {
 		res = append(res, domain.Todo{
-			ID:        domain.TodoId(todo.ID),
+			ID:        domain.TodoId(todo.TodoID),
 			Content:   domain.TodoContent(todo.Content),
 			Completed: domain.TodoCompleted(todo.Completed),
+			UserId:    domain.UserId(domain.UserId(todo.UserID)),
 		})
 	}
 
