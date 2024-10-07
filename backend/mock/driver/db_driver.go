@@ -343,6 +343,20 @@ func (mr *MockQuerierMockRecorder) InsertUser(ctx, arg any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertUser", reflect.TypeOf((*MockQuerier)(nil).InsertUser), ctx, arg)
 }
 
+// InsertUserTodo mocks base method.
+func (m *MockQuerier) InsertUserTodo(ctx context.Context, arg db_driver.InsertUserTodoParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InsertUserTodo", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// InsertUserTodo indicates an expected call of InsertUserTodo.
+func (mr *MockQuerierMockRecorder) InsertUserTodo(ctx, arg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertUserTodo", reflect.TypeOf((*MockQuerier)(nil).InsertUserTodo), ctx, arg)
+}
+
 // UpdateTodo mocks base method.
 func (m *MockQuerier) UpdateTodo(ctx context.Context, arg db_driver.UpdateTodoParams) error {
 	m.ctrl.T.Helper()
