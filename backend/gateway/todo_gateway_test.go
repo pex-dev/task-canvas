@@ -180,6 +180,7 @@ func TestTodoGateway_Update(t *testing.T) {
 					ID:        domain.TodoId(uuid),
 					Content:   "title1",
 					Completed: true,
+					UserId:    domain.NewUserId(),
 				},
 			},
 			wantErr: false,
