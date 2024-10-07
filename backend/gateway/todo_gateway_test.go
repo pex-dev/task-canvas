@@ -148,12 +148,16 @@ func TestTodoGateway_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
+	ctx := context.Background()
+
 	mockTodoDriver := mock_db_driver.NewMockQuerier(ctrl)
-	uuid := uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")
-	mockTodoDriver.EXPECT().UpdateTodo(context.Background(), sqlc.UpdateTodoParams{
-		ID:        uuid,
+	todoUuid := uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")
+	userId := domain.NewUserId()
+	mockTodoDriver.EXPECT().UpdateTodo(ctx, sqlc.UpdateTodoParams{
+		TodoID:    todoUuid,
 		Content:   "title1",
 		Completed: true,
+		UserID:    uuid.UUID(userId),
 	}).Times(1)
 
 	type fields struct {
@@ -175,12 +179,12 @@ func TestTodoGateway_Update(t *testing.T) {
 				db_driver: mockTodoDriver,
 			},
 			args: args{
-				ctx: context.Background(),
+				ctx: ctx,
 				todo: domain.Todo{
-					ID:        domain.TodoId(uuid),
+					ID:        domain.TodoId(todoUuid),
 					Content:   "title1",
 					Completed: true,
-					UserId:    domain.NewUserId(),
+					UserId:    userId,
 				},
 			},
 			wantErr: false,
@@ -212,7 +216,7 @@ func TestTodoGateway_Delete(t *testing.T) {
 	mockDriver.EXPECT().Begin(ctx).Return(mockTx, nil).Times(1)
 	mockDriver.EXPECT().WithTx(mockTx).Return(mockDriver).Times(1)
 	mockDriver.EXPECT().DeleteTodo(ctx, sqlc.DeleteTodoParams{
-		ID:     uuid.UUID(domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"))),
+		TodoID: uuid.UUID(domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"))),
 		UserID: uuid.UUID(userId),
 	}).Return(nil).Times(1)
 
