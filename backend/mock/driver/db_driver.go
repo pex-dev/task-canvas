@@ -257,17 +257,17 @@ func (mr *MockQuerierMockRecorder) Begin(ctx any) *gomock.Call {
 }
 
 // DeleteTodo mocks base method.
-func (m *MockQuerier) DeleteTodo(ctx context.Context, id uuid.UUID) error {
+func (m *MockQuerier) DeleteTodo(ctx context.Context, arg db_driver.DeleteTodoParams) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteTodo", ctx, id)
+	ret := m.ctrl.Call(m, "DeleteTodo", ctx, arg)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteTodo indicates an expected call of DeleteTodo.
-func (mr *MockQuerierMockRecorder) DeleteTodo(ctx, id any) *gomock.Call {
+func (mr *MockQuerierMockRecorder) DeleteTodo(ctx, arg any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTodo", reflect.TypeOf((*MockQuerier)(nil).DeleteTodo), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTodo", reflect.TypeOf((*MockQuerier)(nil).DeleteTodo), ctx, arg)
 }
 
 // FindTodo mocks base method.
