@@ -203,22 +203,26 @@ func TestTodoGateway_Delete(t *testing.T) {
 	defer ctrl.Finish()
 
 	ctx := context.Background()
+	userId := domain.NewUserId()
 
 	mockTx := mock_db_driver.NewMockTx(ctrl)
-	mockTx.EXPECT().Rollback(ctx).Return(nil).Times(1)
 	mockTx.EXPECT().Commit(ctx).Return(nil).Times(1)
 
 	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
 	mockDriver.EXPECT().Begin(ctx).Return(mockTx, nil).Times(1)
 	mockDriver.EXPECT().WithTx(mockTx).Return(mockDriver).Times(1)
-	mockDriver.EXPECT().DeleteTodo(ctx, uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")).Return(nil).Times(1)
+	mockDriver.EXPECT().DeleteTodo(ctx, sqlc.DeleteTodoParams{
+		ID:     uuid.UUID(domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"))),
+		UserID: uuid.UUID(userId),
+	}).Return(nil).Times(1)
 
 	type fields struct {
 		db_driver db_driver.Querier
 	}
 	type args struct {
-		ctx context.Context
-		id  domain.TodoId
+		ctx    context.Context
+		id     domain.TodoId
+		userId domain.UserId
 	}
 	tests := []struct {
 		name    string
@@ -232,8 +236,9 @@ func TestTodoGateway_Delete(t *testing.T) {
 				db_driver: mockDriver,
 			},
 			args: args{
-				ctx: ctx,
-				id:  domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
+				ctx:    ctx,
+				id:     domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
+				userId: userId,
 			},
 			wantErr: false,
 		},
@@ -243,7 +248,7 @@ func TestTodoGateway_Delete(t *testing.T) {
 			g := &TodoGateway{
 				db_driver: tt.fields.db_driver,
 			}
-			if err := g.Delete(tt.args.ctx, tt.args.id); (err != nil) != tt.wantErr {
+			if err := g.Delete(tt.args.ctx, tt.args.id, tt.args.userId); (err != nil) != tt.wantErr {
 				t.Errorf("TodoGateway.Delete() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
