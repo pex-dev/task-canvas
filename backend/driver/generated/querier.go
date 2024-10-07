@@ -17,6 +17,7 @@ type Querier interface {
 	FindUserById(ctx context.Context, id uuid.UUID) (TaskCanvasUser, error)
 	InsertTodo(ctx context.Context, arg InsertTodoParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) error
+	InsertUserTodo(ctx context.Context, arg InsertUserTodoParams) error
 	UpdateTodo(ctx context.Context, arg UpdateTodoParams) error
 }
 

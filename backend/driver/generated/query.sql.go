@@ -119,9 +119,9 @@ INSERT INTO task_canvas.todo (
   completed
 )
 VALUES (
-  $1,
-  $2,
-  $3
+  $1::uuid,
+  $2::text,
+  $3::boolean
 )
 `
 
@@ -156,6 +156,27 @@ type InsertUserParams struct {
 
 func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) error {
 	_, err := q.db.Exec(ctx, insertUser, arg.ID, arg.Email, arg.PasswordHash)
+	return err
+}
+
+const insertUserTodo = `-- name: InsertUserTodo :exec
+INSERT INTO task_canvas.user_todo (
+  user_id,
+  todo_id
+)
+VALUES (
+  $1::uuid,
+  $2::uuid
+)
+`
+
+type InsertUserTodoParams struct {
+	UserID uuid.UUID `json:"user_id"`
+	TodoID uuid.UUID `json:"todo_id"`
+}
+
+func (q *Queries) InsertUserTodo(ctx context.Context, arg InsertUserTodoParams) error {
+	_, err := q.db.Exec(ctx, insertUserTodo, arg.UserID, arg.TodoID)
 	return err
 }
 
