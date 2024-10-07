@@ -81,9 +81,10 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 
 func (g *TodoGateway) Update(ctx context.Context, todo domain.Todo) error {
 	err := g.db_driver.UpdateTodo(ctx, sqlc.UpdateTodoParams{
-		ID:        uuid.UUID(todo.ID),
+		TodoID:    uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
+		UserID:    uuid.UUID(todo.UserId),
 	})
 
 	if err != nil {
@@ -112,7 +113,7 @@ func (g *TodoGateway) Delete(ctx context.Context, id domain.TodoId, userId domai
 
 	querier := g.db_driver.WithTx(tx)
 	err = querier.DeleteTodo(ctx, sqlc.DeleteTodoParams{
-		ID:     uuid.UUID(id),
+		TodoID: uuid.UUID(id),
 		UserID: uuid.UUID(userId),
 	})
 	if err != nil {
