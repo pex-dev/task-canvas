@@ -85,19 +85,27 @@ func TestTodoGateway_Store(t *testing.T) {
 	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
 	mockDriver.EXPECT().Begin(ctx).Return(mockTx, nil).Times(1)
 	mockTx.EXPECT().Commit(ctx).Return(nil).Times(1)
-	mockTx.EXPECT().Rollback(ctx).Return(nil).Times(1)
 	mockDriver.EXPECT().WithTx(mockTx).Return(mockDriver).Times(1)
 
+	userId := domain.NewUserId()
+	todoIdUuid := uuid.New()
+
 	todo := domain.Todo{
-		ID:        domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
+		ID:        domain.TodoId(todoIdUuid),
 		Content:   "title1",
 		Completed: true,
+		UserId:    userId,
 	}
-	mockDriver.EXPECT().InsertTodo(context.Background(), sqlc.InsertTodoParams{
-		ID:        uuid.UUID(todo.ID),
+	mockDriver.EXPECT().InsertTodo(ctx, sqlc.InsertTodoParams{
+		ID:        todoIdUuid,
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
-	}).Times(1)
+	}).Times(1).Return(nil)
+
+	mockDriver.EXPECT().InsertUserTodo(ctx, sqlc.InsertUserTodoParams{
+		UserID: uuid.UUID(userId),
+		TodoID: todoIdUuid,
+	}).Times(1).Return(nil)
 
 	type fields struct {
 		db_driver db_driver.Querier
