@@ -20,8 +20,12 @@ func TestUpdateTodoUseCase_UpdateTodoUseCase(t *testing.T) {
 		ID:        domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")),
 		Content:   domain.TodoContent("title1"),
 		Completed: domain.TodoCompleted(true),
+		UserId:    domain.NewUserId(),
 	}
-	mockTodoPort.EXPECT().Update(context.Background(), todo).Return(nil)
+
+	ctx := context.Background()
+
+	mockTodoPort.EXPECT().Update(ctx, todo).Return(nil)
 
 	type fields struct {
 		todoPort port.TodoPort
@@ -42,7 +46,7 @@ func TestUpdateTodoUseCase_UpdateTodoUseCase(t *testing.T) {
 				todoPort: mockTodoPort,
 			},
 			args: args{
-				ctx:  context.Background(),
+				ctx:  ctx,
 				todo: todo,
 			},
 			wantErr: false,
