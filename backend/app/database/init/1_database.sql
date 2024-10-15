@@ -18,7 +18,15 @@ CREATE TABLE task_canvas.user_todo (
 
 CREATE TABLE task_canvas.tag (
     id uuid primary key,
-    name text not null
+    name text not null,
+    is_deleted boolean not null default false
+);
+
+CREATE TABLE task_canvas.tag_history (
+    id uuid primary key,
+    tag_id uuid references task_canvas.tag(id),
+    name text not null,
+    created_at timestamp not null
 );
 
 CREATE TABLE task_canvas.todo_tag (
