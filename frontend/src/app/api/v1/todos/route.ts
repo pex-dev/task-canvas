@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
     });
-    return new NextResponse(null, { status: 200 });
+    return new NextResponse(response.body, { status: 200 });
   } catch (error) {
     console.error('Fetch request failed:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
