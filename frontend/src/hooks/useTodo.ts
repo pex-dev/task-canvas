@@ -13,8 +13,8 @@ export const useTodo = () => {
     });
   };
 
-  const updateTodo = (id: Todo['id'], completed: Todo['completed']) => {
-    updateTodoUseCase(id, completed).then(() => {
+  const updateTodo = (id: Todo['id'], content: Todo['content'], completed: Todo['completed']) => {
+    updateTodoUseCase(id, content, completed).then(() => {
       const newTodos = todos.map((todo) => {
         if (id === todo.id) {
           const newTodo: Todo = {

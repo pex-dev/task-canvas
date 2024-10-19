@@ -11,6 +11,7 @@ import Calender from '@/_components/mui/Calendar';
 import { useTodo } from '@/hooks/useTodo';
 import useSignOut from '@/hooks/useSignOut';
 import { useRouter } from 'next/navigation';
+import { Todo } from '@/domain/todo';
 
 const Top = () => {
   const router = useRouter();
@@ -30,8 +31,12 @@ const Top = () => {
     setValue('');
   };
 
-  const handleChangeCheckbox = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    updateTodo(id, event.target.checked);
+  const handleChangeCheckbox = (
+    id: Todo['id'],
+    content: Todo['content'],
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    updateTodo(id, content, event.target.checked);
   };
 
   return (
@@ -125,7 +130,7 @@ const Top = () => {
                   text={todo.content}
                   checked={todo.completed}
                   onChange={(event) => {
-                    handleChangeCheckbox(todo.id, event);
+                    handleChangeCheckbox(todo.id, todo.content, event);
                   }}
                   key={i}
                 />
