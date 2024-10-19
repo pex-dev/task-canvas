@@ -4,9 +4,7 @@ type DriverTodo = {
   completed: boolean;
 };
 
-type DriverTodos = {
-  todos: DriverTodo[];
-};
+type DriverTodos = DriverTodo[];
 
 export type CreateDriverRequest = {
   content: string;
@@ -14,6 +12,12 @@ export type CreateDriverRequest = {
 };
 
 type CreateTodoResult = string;
+
+export type UpdateDriverRequest = {
+  id: string;
+  content: string;
+  completed: boolean;
+};
 
 export const getTodos = async (): Promise<DriverTodos> => {
   const response = await fetch('http://localhost:3000/api/v1/todos');
@@ -39,6 +43,23 @@ export const createTodo = async ({
 
   const json = await response.json();
   return json.id;
+};
+
+export const updateTodoDriver = async ({
+  id,
+  content,
+  completed,
+}: UpdateDriverRequest): Promise<void> => {
+  await fetch(`http://localhost:3000/api/v1/todos/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      content: content,
+      completed: completed,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };
 
 export const signIn = async (email: string, password: string): Promise<void> => {

@@ -2,19 +2,27 @@ import {
   getTodos as getTodosDriver,
   createTodo as createTodoDriver,
   CreateDriverRequest,
+  updateTodoDriver,
+  UpdateDriverRequest,
 } from '@/driver';
+
 import { Todo } from '@/domain/todo';
 
 interface TodoGatewayInterface {
   getTodos: () => Promise<Todo[]>;
   createTodo: (content: Todo['content'], completed: Todo['completed']) => Promise<Todo>;
+  updateTodo: (
+    id: Todo['id'],
+    content: Todo['content'],
+    completed: Todo['completed'],
+  ) => Promise<void>;
 }
 
 export default class TodoGateway implements TodoGatewayInterface {
   async getTodos(): Promise<Todo[]> {
     const driverTodos = await getTodosDriver();
 
-    const todos = (driverTodos.todos ?? []).map((driverTodo) => {
+    const todos = (driverTodos ?? []).map((driverTodo) => {
       const todo: Todo = {
         id: driverTodo.id,
         content: driverTodo.content,
@@ -42,5 +50,19 @@ export default class TodoGateway implements TodoGatewayInterface {
     };
 
     return todo;
+  }
+
+  async updateTodo(
+    id: Todo['id'],
+    content: Todo['content'],
+    completed: Todo['completed'],
+  ): Promise<void> {
+    const updateTodoForDriver: UpdateDriverRequest = {
+      id: id,
+      content: content,
+      completed: completed,
+    };
+
+    await updateTodoDriver(updateTodoForDriver);
   }
 }
