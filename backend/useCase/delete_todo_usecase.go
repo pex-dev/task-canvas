@@ -16,8 +16,8 @@ func NewDeleteTodoUseCase(todoPort port.TodoPort) *DeleteTodoUseCase {
 	}
 }
 
-func (u *DeleteTodoUseCase) Delete(ctx context.Context, id domain.TodoId) error {
-	err := u.todoPort.Delete(ctx, id)
+func (u *DeleteTodoUseCase) Delete(ctx context.Context, todoId domain.TodoId, userId domain.UserId) error {
+	err := u.todoPort.Delete(ctx, todoId, userId)
 	if err != nil {
 		return err
 	}

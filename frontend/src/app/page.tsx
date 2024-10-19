@@ -9,10 +9,14 @@ import Title from '@/_components/molecules/Title';
 import TodoCard, { TodoCardProps } from '@/_components/molecules/TodoCard';
 import Calender from '@/_components/mui/Calendar';
 import { useTodo } from '@/hooks/useTodo';
+import useSignOut from '@/hooks/useSignOut';
+import { useRouter } from 'next/navigation';
 
 const Top = () => {
+  const router = useRouter();
   const [value, setValue] = useState<string>('');
   const { todos, addTodo, updateTodo } = useTodo();
+  const { signOut } = useSignOut();
 
   const handleChangeText: InputProps['onChange'] = (event) => {
     const inputText = event.target.value;
@@ -39,6 +43,24 @@ const Top = () => {
         paddingTop: '60px',
       }}
     >
+      <Button
+        onClick={() => {
+          signOut().then(() => {
+            router.push('/signin');
+          });
+        }}
+        sx={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          color: 'white',
+          '&:hover': {
+            backgroundColor: 'primary.dark',
+          },
+        }}
+      >
+        ログアウト
+      </Button>
       <Container maxWidth={'lg'}>
         <Box
           sx={{

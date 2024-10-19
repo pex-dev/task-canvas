@@ -10,4 +10,5 @@ type Todo struct {
 	ID        TodoId
 	Content   TodoContent
 	Completed TodoCompleted
+	UserId    UserId
 }

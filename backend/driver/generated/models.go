@@ -8,8 +8,29 @@ import (
 	uuid "github.com/google/uuid"
 )
 
+type TaskCanvasTag struct {
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
+}
+
 type TaskCanvasTodo struct {
 	ID        uuid.UUID `json:"id"`
 	Content   string    `json:"content"`
 	Completed bool      `json:"completed"`
+}
+
+type TaskCanvasTodoTag struct {
+	TodoID uuid.UUID `json:"todo_id"`
+	TagID  uuid.UUID `json:"tag_id"`
+}
+
+type TaskCanvasUser struct {
+	ID           uuid.UUID `json:"id"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"password_hash"`
+}
+
+type TaskCanvasUserTodo struct {
+	UserID uuid.UUID `json:"user_id"`
+	TodoID uuid.UUID `json:"todo_id"`
 }
