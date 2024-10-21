@@ -31,21 +31,6 @@ services:
     env_file:
       - .env
 
-  task_canvas_db:
-    image: postgres:latest
-    container_name: ${POSTGRES_CONTAINER}
-    restart: always
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    networks:
-      - task_canvas_network
-    env_file:
-      - .env
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - ./backend/app/database/init:/docker-entrypoint-initdb.d
-      - ./backend/app/database/seeds:/backend/app/database/seeds
-
 networks:
   task_canvas_network:
     driver: bridge
