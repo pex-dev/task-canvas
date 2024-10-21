@@ -12,7 +12,7 @@ import (
 var PgPool *pgxpool.Pool
 
 func init() {
-	host := os.Getenv("POSTGRES_CONTAINER")
+	host := os.Getenv("POSTGRES_HOST")
 	port := os.Getenv("POSTGRES_PORT")
 	user := os.Getenv("POSTGRES_USER")
 	password := os.Getenv("POSTGRES_PASSWORD")
