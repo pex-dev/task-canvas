@@ -26,8 +26,6 @@ services:
       - "${GO_PORT}:8080"
     networks:
       - task_canvas_network
-    depends_on:
-      - task_canvas_db
     env_file:
       - .env
 
