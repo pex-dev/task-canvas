@@ -1,4 +1,4 @@
-FROM golang:1.23.2-alpine3.19
+FROM golang:1.23.3-alpine3.19
 
 WORKDIR /backend
 
