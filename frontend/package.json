@@ -23,7 +23,7 @@
     "react-hook-form": "7.53.1"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "8.3.6",
+    "@storybook/addon-essentials": "8.4.2",
     "@storybook/addon-links": "8.3.6",
     "@storybook/nextjs": "8.3.6",
     "@storybook/react": "8.3.6",
