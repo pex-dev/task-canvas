@@ -5,8 +5,7 @@
 	"packageRules": [
 		{
 			"groupName": "storybook",
-			"excludePackageNames": ["storybook"],
-			"excludePackagePrefixes": ["storybook"]
+			"matchPackagePatterns": ["^@storybook/"]
 		}
 	]
 }
