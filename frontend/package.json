@@ -20,7 +20,7 @@
     "next": "14.2.17",
     "react": "18",
     "react-dom": "18",
-    "react-hook-form": "7.53.1"
+    "react-hook-form": "7.53.2"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "8.3.6",
