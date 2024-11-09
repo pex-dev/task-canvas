@@ -5,7 +5,8 @@
 	"packageRules": [
 		{
 			"groupName": "storybook",
-			"excludePackageNames": ["storybook"]
+			"excludePackageNames": ["storybook"],
+			"excludePackagePrefixes": ["storybook"]
 		}
 	]
 }
