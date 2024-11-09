@@ -1,0 +1,11 @@
+{
+	"description": "Renovate",
+	"extends": ["config:base"],
+	"baseBranches": ["main"],
+	"packageRules": [
+		{
+			"groupName": "storybook",
+			"excludePackageNames": ["storybook"]
+		}
+	]
+}
