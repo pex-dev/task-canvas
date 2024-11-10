@@ -1,4 +1,5 @@
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { JSX } from 'react';
 
 export type AlertPropsType = AlertProps;
 

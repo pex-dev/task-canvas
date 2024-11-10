@@ -1,10 +1,11 @@
 import { Theme, SxProps } from '@mui/material';
 
 import MuiAlert, { AlertPropsType as AlertProps } from '@/_components/mui/Alert';
+import { FC } from 'react';
 
 export type AlertPropsType = Pick<AlertProps, 'severity' | 'children' | 'sx'>;
 
-const Alert = ({ sx, severity, children }: AlertPropsType): JSX.Element => (
+const Alert: FC<AlertProps> = ({ sx, severity, children }) => (
   <MuiAlert
     sx={
       [
