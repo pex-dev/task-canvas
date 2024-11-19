@@ -16,6 +16,7 @@ func TestGetTodoUseCase_Get(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
+	ctx := context.Background()
 	mockTodoPort := mock_port.NewMockTodoPort(ctrl)
 
 	userId := domain.NewUserId()
@@ -26,7 +27,7 @@ func TestGetTodoUseCase_Get(t *testing.T) {
 		{ID: domain.TodoId(uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7")), Content: "title3", Completed: true, UserId: userId},
 	}
 
-	mockTodoPort.EXPECT().Get(context.Background(), userId).Return(todos, nil)
+	mockTodoPort.EXPECT().Get(ctx, userId).Return(todos, nil)
 
 	type fields struct {
 		todoPort port.TodoPort
@@ -48,7 +49,7 @@ func TestGetTodoUseCase_Get(t *testing.T) {
 				todoPort: mockTodoPort,
 			},
 			args: args{
-				ctx:    context.Background(),
+				ctx:    ctx,
 				userId: userId,
 			},
 			want:    todos,

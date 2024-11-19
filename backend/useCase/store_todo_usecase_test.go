@@ -15,12 +15,13 @@ import (
 func TestStoreTodoUseCase_Store(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
+	ctx := context.Background()
 
 	mockTodoPort := mock_port.NewMockTodoPort(ctrl)
 	mockTodoIdPort := mock_port.NewMockTodoIdPort(ctrl)
 
 	todoId := domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"))
-	mockTodoIdPort.EXPECT().Generate(context.Background()).Return(todoId, nil)
+	mockTodoIdPort.EXPECT().Generate(ctx).Return(todoId, nil)
 
 	todoContent := domain.TodoContent("title1")
 	todoCompleted := domain.TodoCompleted(true)
@@ -32,7 +33,7 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 		Completed: todoCompleted,
 		UserId:    userId,
 	}
-	mockTodoPort.EXPECT().Store(context.Background(), todo).Return(nil)
+	mockTodoPort.EXPECT().Store(ctx, todo).Return(nil)
 
 	type fields struct {
 		todoPort   port.TodoPort
@@ -58,7 +59,7 @@ func TestStoreTodoUseCase_Store(t *testing.T) {
 				todoIdPort: mockTodoIdPort,
 			},
 			args: args{
-				ctx:       context.Background(),
+				ctx:       ctx,
 				content:   todoContent,
 				completed: todoCompleted,
 				userId:    userId,
