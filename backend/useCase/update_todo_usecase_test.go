@@ -2,6 +2,7 @@ package useCase
 
 import (
 	"context"
+	"errors"
 	"task-canvas/domain"
 	mock_port "task-canvas/mock/port"
 	"task-canvas/port"
@@ -25,8 +26,6 @@ func TestUpdateTodoUseCase_UpdateTodoUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	mockTodoPort.EXPECT().Update(ctx, todo).Return(nil)
-
 	type fields struct {
 		todoPort port.TodoPort
 	}
@@ -37,11 +36,12 @@ func TestUpdateTodoUseCase_UpdateTodoUseCase(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
+		setup   func()
 		args    args
 		wantErr bool
 	}{
 		{
-			name: "Todoの更新",
+			name: "Todoの更新に成功",
 			fields: fields{
 				todoPort: mockTodoPort,
 			},
@@ -49,11 +49,43 @@ func TestUpdateTodoUseCase_UpdateTodoUseCase(t *testing.T) {
 				ctx:  ctx,
 				todo: todo,
 			},
+			setup: func() {
+				mockTodoPort.EXPECT().Update(ctx, todo).Return(nil).Times(1)
+			},
 			wantErr: false,
+		},
+		{
+			name: "Todoの更新に失敗したらエラーを返す",
+			fields: fields{
+				todoPort: mockTodoPort,
+			},
+			args: args{
+				ctx:  ctx,
+				todo: todo,
+			},
+			setup: func() {
+				mockTodoPort.EXPECT().Update(ctx, todo).Return(errors.New("error")).Times(1)
+			},
+			wantErr: true,
+		},
+		{
+			name: "コンテキストがキャンセルされたらエラーを返す",
+			fields: fields{
+				todoPort: mockTodoPort,
+			},
+			args: args{
+				ctx:  ctx,
+				todo: todo,
+			},
+			setup: func() {
+				mockTodoPort.EXPECT().Update(ctx, todo).Return(context.Canceled).Times(1)
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.setup()
 			u := &UpdateTodoUseCase{
 				todoPort: tt.fields.todoPort,
 			}
