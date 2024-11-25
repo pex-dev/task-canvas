@@ -1,3 +1,4 @@
+import { Todo } from '@/domain/todo';
 import {
   getTodos as getTodosDriver,
   createTodo as createTodoDriver,
@@ -6,7 +7,6 @@ import {
   UpdateDriverRequest,
 } from '@/driver';
 
-import { Todo } from '@/domain/todo';
 
 interface TodoGatewayInterface {
   getTodos: () => Promise<Todo[]>;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Checkbox, { CheckboxProps } from '@/_components/atoms/Checkbox';
-import Typography from '@/_components/mui/Typography';
+import Checkbox from '@/_components/atoms/Checkbox';
 import Box from '@/_components/mui/Box';
+import Typography from '@/_components/mui/Typography';
 
 export type TodoCardProps = {
   text: string;

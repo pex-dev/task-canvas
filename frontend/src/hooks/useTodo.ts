@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+
 import { Todo } from '@/domain/todo';
-import { getTodos } from '@/useCase/getTodoUseCase';
 import { createTodo } from '@/useCase/createTodoUseCase';
+import { getTodos } from '@/useCase/getTodoUseCase';
 import { updateTodo as updateTodoUseCase } from '@/useCase/updateTodoUseCase';
 
 export const useTodo = () => {

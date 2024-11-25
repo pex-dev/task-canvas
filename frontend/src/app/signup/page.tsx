@@ -4,19 +4,19 @@ import { memo, forwardRef, ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockIcon from '@mui/icons-material/Lock';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
+import { useSnackbar } from '@/_components/contexts/SnackbarContext';
 import Box from '@/_components/mui/Box';
 import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
 import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 import useSignUp from '@/hooks/useSignUp';
-import { useSnackbar } from '@/_components/contexts/SnackbarContext';
 
 const TextFieldWithIcon = memo(
   forwardRef<
