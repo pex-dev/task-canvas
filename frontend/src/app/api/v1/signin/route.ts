@@ -8,7 +8,7 @@ type RequestBody = {
 
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as RequestBody;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   if (!body) {
     return NextResponse.json({ message: 'Request body is empty' }, { status: 400 });
   }
