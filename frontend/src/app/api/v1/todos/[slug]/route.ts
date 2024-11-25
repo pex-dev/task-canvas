@@ -6,11 +6,12 @@ type PutRequestBody = {
   completed: boolean;
 };
 
-export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
     const body = (await req.json()) as PutRequestBody;
-    const id = params.slug;
-    const cookieStore = cookies();
+    const { slug } = await context.params;
+    const id = slug;
+    const cookieStore = await cookies();
 
     if (!body) {
       return NextResponse.json({ message: 'Request body is empty' }, { status: 400 });

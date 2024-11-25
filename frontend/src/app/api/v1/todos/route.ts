@@ -16,7 +16,7 @@ type PostRequestBody = {
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const currentToken = cookieStore.get('token');
 
     if (currentToken === undefined) {
@@ -53,7 +53,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as PostRequestBody;
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     if (!body) {
       return NextResponse.json({ message: 'Request body is empty' }, { status: 400 });

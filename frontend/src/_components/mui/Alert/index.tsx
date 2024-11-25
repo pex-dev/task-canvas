@@ -1,8 +1,9 @@
+import { FC } from 'react';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 export type AlertPropsType = AlertProps;
 
-const Alert = (props: AlertPropsType): JSX.Element => (
+const Alert: FC<AlertProps> = (props) => (
   <MuiAlert {...props}>{props.children}</MuiAlert>
 );
 
