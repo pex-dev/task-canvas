@@ -1,5 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, MockedFunction } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { useTodo } from '@/hooks/useTodo';
 import { createTodo } from '@/useCase/createTodoUseCase';
@@ -18,9 +18,9 @@ vi.mock('@/useCase/updateTodoUseCase', () => ({
   updateTodo: vi.fn(),
 }));
 
-const mockCreateTodo = createTodo as MockedFunction<typeof createTodo>;
-const mockGetTodos = getTodos as MockedFunction<typeof getTodos>;
-const mockUpdateTodoUseCase = updateTodoUseCase as MockedFunction<typeof updateTodoUseCase>;
+const mockCreateTodo = vi.mocked(createTodo);
+const mockGetTodos = vi.mocked(getTodos);
+const mockUpdateTodoUseCase = vi.mocked(updateTodoUseCase);
 
 describe('useTodo', () => {
   it('マウント時にTodoを取得する', async () => {
