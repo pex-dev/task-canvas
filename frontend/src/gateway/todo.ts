@@ -7,7 +7,6 @@ import {
   UpdateDriverRequest,
 } from '@/driver';
 
-
 interface TodoGatewayInterface {
   getTodos: () => Promise<Todo[]>;
   createTodo: (content: Todo['content'], completed: Todo['completed']) => Promise<Todo>;

@@ -15,7 +15,6 @@ import { Todo } from '@/domain/todo';
 import useSignOut from '@/hooks/useSignOut';
 import { useTodo } from '@/hooks/useTodo';
 
-
 const Top = () => {
   const router = useRouter();
   const [value, setValue] = useState<string>('');
