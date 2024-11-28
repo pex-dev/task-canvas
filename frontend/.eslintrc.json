@@ -1,5 +1,6 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["unused-imports"],
   "rules": {
     "import/order": [
       "error",
@@ -22,7 +23,7 @@
             "position": "before"
           },
           {
-            "pattern": "{~~/**,~/**}",
+            "pattern": "{@/**}",
             "group": "parent",
             "position": "before"
           }
