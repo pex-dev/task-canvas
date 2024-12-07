@@ -32,10 +32,18 @@ jobs:
         with:
           go-version-file: "backend/go.mod"
 
-      - name: golangci-lint
+      - name: Install golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.60
+          version: v1.55.2
+          working-directory: backend
+          args: --timeout=5m
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          args: run
+          working-directory: ./backend
 
       - uses: Jerome1337/gofmt-action@v1.0.5
         with:
