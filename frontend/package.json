@@ -18,7 +18,7 @@
     "@emotion/styled": "11.13.5",
     "@mui/icons-material": "6.1.10",
     "@mui/material": "6.1.10",
-    "next": "15.0.4",
+    "next": "15.1.0",
     "react": "18",
     "react-dom": "18",
     "react-hook-form": "7.54.0"
@@ -35,7 +35,7 @@
     "@types/react": "18",
     "@types/react-dom": "18",
     "eslint": "9.16.0",
-    "eslint-config-next": "15.0.4",
+    "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-storybook": "0.11.1",
     "eslint-plugin-unused-imports": "4.1.4",
