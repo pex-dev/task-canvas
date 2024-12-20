@@ -12,11 +12,14 @@ import (
 )
 
 const deleteTodo = `-- name: DeleteTodo :exec
-DELETE FROM task_canvas.user_todo
-USING task_canvas.todo
-WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
-  AND task_canvas.todo.id = $1::uuid
-  AND task_canvas.user_todo.user_id = $2::uuid
+WITH deleted_todos AS (
+  DELETE FROM task_canvas.user_todo
+  WHERE todo_id = $1::uuid
+  AND user_id = $2::uuid
+  RETURNING todo_id
+)
+DELETE FROM task_canvas.todo
+WHERE id IN (SELECT todo_id FROM deleted_todos)
 `
 
 type DeleteTodoParams struct {
