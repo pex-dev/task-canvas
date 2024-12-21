@@ -32,18 +32,11 @@ jobs:
         with:
           go-version-file: "backend/go.mod"
 
-      - name: Install dependencies
-        run: |
-          cd ./backend
-          go mod tidy
-          go mod download
-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.55.2
-          working-directory: backend
-          args: --timeout=5m
+          version: v1.60
+          working-directory: ./backend
 
       - uses: Jerome1337/gofmt-action@v1.0.5
         with:
