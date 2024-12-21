@@ -12,11 +12,13 @@ import (
 type UserJwtToken string
 
 func NewUserJwtToken(userId *UserId) (UserJwtToken, error) {
+	now := time.Now().Unix()
 	exp := time.Now().Add(72 * time.Hour).Unix()
 
 	claims := jwt.MapClaims{
 		"user_id": uuid.UUID(*userId),
 		"exp":     exp,
+		"iat":     now,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

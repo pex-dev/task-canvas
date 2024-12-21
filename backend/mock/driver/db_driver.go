@@ -25,6 +25,7 @@ import (
 type MockTx struct {
 	ctrl     *gomock.Controller
 	recorder *MockTxMockRecorder
+	isgomock struct{}
 }
 
 // MockTxMockRecorder is the mock recorder for MockTx.
@@ -222,6 +223,7 @@ func (mr *MockTxMockRecorder) SendBatch(ctx, b any) *gomock.Call {
 type MockQuerier struct {
 	ctrl     *gomock.Controller
 	recorder *MockQuerierMockRecorder
+	isgomock struct{}
 }
 
 // MockQuerierMockRecorder is the mock recorder for MockQuerier.

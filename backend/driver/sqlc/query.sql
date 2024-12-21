@@ -51,11 +51,14 @@ WHERE
 ;
 
 -- name: DeleteTodo :exec
-DELETE FROM task_canvas.user_todo
-USING task_canvas.todo
-WHERE task_canvas.user_todo.todo_id = task_canvas.todo.id
-  AND task_canvas.todo.id = sqlc.arg(todo_id)::uuid
-  AND task_canvas.user_todo.user_id = sqlc.arg(user_id)::uuid
+WITH deleted_todos AS (
+  DELETE FROM task_canvas.user_todo
+  WHERE todo_id = sqlc.arg(todo_id)::uuid
+  AND user_id = sqlc.arg(user_id)::uuid
+  RETURNING todo_id
+)
+DELETE FROM task_canvas.todo
+WHERE id IN (SELECT todo_id FROM deleted_todos)
 ;
 
 -- name: InsertUser :exec
