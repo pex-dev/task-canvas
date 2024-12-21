@@ -48,10 +48,14 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 
 	defer func() {
 		if p := recover(); p != nil {
-			tx.Rollback(ctx)
+			if rerr := tx.Rollback(ctx); rerr != nil {
+				panic(rerr)
+			}
 			panic(p)
 		} else if err != nil {
-			tx.Rollback(ctx)
+			if rerr := tx.Rollback(ctx); rerr != nil {
+				panic(rerr)
+			}
 		} else {
 			err = tx.Commit(ctx)
 		}
@@ -102,10 +106,14 @@ func (g *TodoGateway) Delete(ctx context.Context, id domain.TodoId, userId domai
 
 	defer func() {
 		if p := recover(); p != nil {
-			err = tx.Rollback(ctx)
+			if rerr := tx.Rollback(ctx); rerr != nil {
+				panic(rerr)
+			}
 			panic(p)
 		} else if err != nil {
-			tx.Rollback(ctx)
+			if rerr := tx.Rollback(ctx); rerr != nil {
+				panic(rerr)
+			}
 		} else {
 			err = tx.Commit(ctx)
 		}
