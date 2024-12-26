@@ -29,9 +29,9 @@ type PostTodosRequest struct {
 }
 
 type PutTodoRequest struct {
-	Id        string `json:"id" param:"id"`
-	Content   string `json:"content"`
-	Completed bool   `json:"completed"`
+	Id        string `json:"id" param:"id" validate:"required"`
+	Content   string `json:"content" validate:"required"`
+	Completed bool   `json:"completed" validate:"required"`
 }
 
 type PostTodosRequestResponse struct {
@@ -39,7 +39,7 @@ type PostTodosRequestResponse struct {
 }
 
 type DeleteTodoRequest struct {
-	Id string `param:"id"`
+	Id string `param:"id" validate:"required"`
 }
 
 func GetTodos(c echo.Context) error {
@@ -121,6 +121,9 @@ func PutTodo(c echo.Context) error {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+	if err := c.Validate(reqTodo); err != nil {
+		return err
+	}
 
 	userIdStr := c.Get("userId").(string)
 	userIdUuid, err := uuid.Parse(userIdStr)
@@ -154,6 +157,9 @@ func DeleteTodo(c echo.Context) error {
 	if err := c.Bind(reqTodo); err != nil {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	if err := c.Validate(reqTodo); err != nil {
+		return err
 	}
 
 	userIdStr := c.Get("userId").(string)
