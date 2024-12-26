@@ -24,8 +24,8 @@ type GetTodosResponse struct {
 }
 
 type PostTodosRequest struct {
-	Content   string `json:"content"`
-	Completed bool   `json:"completed"`
+	Content   string `json:"content" validate:"required"`
+	Completed bool   `json:"completed" validate:"required"`
 }
 
 type PutTodoRequest struct {
@@ -82,6 +82,9 @@ func PostTodos(c echo.Context) error {
 	if err := c.Bind(reqTodo); err != nil {
 		logger.Logger.Error("Failed to bind release: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	if err := c.Validate(reqTodo); err != nil {
+		return err
 	}
 
 	userIdStr := c.Get("userId").(string)
