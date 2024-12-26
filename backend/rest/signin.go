@@ -12,14 +12,17 @@ import (
 )
 
 type PostSignInRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
 }
 
 func PostSignIn(ctx echo.Context) error {
 	req := new(PostSignInRequest)
 	if err := ctx.Bind(req); err != nil {
-		return err
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	if err := ctx.Validate(req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
 	dbDriver := db_driver.NewQuerier(config.PgPool)
