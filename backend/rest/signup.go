@@ -13,8 +13,8 @@ import (
 )
 
 type PostSignUpUsersRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
 }
 
 func PostSignUpUsers(c echo.Context) error {
@@ -22,6 +22,10 @@ func PostSignUpUsers(c echo.Context) error {
 
 	if err := c.Bind(req); err != nil {
 		logger.Logger.Error("Failed to bind request: " + err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, "Invalid request payload")
+	}
+	if err := c.Validate(req); err != nil {
+		logger.Logger.Error("Failed to validate request: " + err.Error())
 		return echo.NewHTTPError(http.StatusBadRequest, "Invalid request payload")
 	}
 
