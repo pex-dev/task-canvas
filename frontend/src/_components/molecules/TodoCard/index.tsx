@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Checkbox from '@/_components/atoms/Checkbox';
 import Box from '@/_components/mui/Box';
+import EditIcon from '@/_components/mui/EditIcon';
+import IconButton from '@/_components/mui/IconButton';
 import Typography from '@/_components/mui/Typography';
 
 export type TodoCardProps = {
@@ -11,11 +13,24 @@ export type TodoCardProps = {
 };
 
 const TodoCard: React.FC<TodoCardProps> = ({ checked, onChange, text }) => {
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+  const visibleEditIcon: React.MouseEventHandler<HTMLDivElement> = () => {
+    setIsHover(true);
+  };
+
+  const hiddenEditIcon: React.MouseEventHandler<HTMLDivElement> = () => {
+    setIsHover(false);
+  };
+
   return (
     <Box
+      onMouseOver={visibleEditIcon}
+      onMouseLeave={hiddenEditIcon}
       sx={{
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
         '&:hover': {
           bgcolor: 'White',
         },
@@ -30,14 +45,32 @@ const TodoCard: React.FC<TodoCardProps> = ({ checked, onChange, text }) => {
           },
         }}
       />
-      <Typography
+      <Box
         sx={{
-          fontSize: '24px',
-          marginLeft: '12px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
         }}
       >
-        {text}
-      </Typography>
+        <Typography
+          sx={{
+            fontSize: '24px',
+            marginLeft: '12px',
+          }}
+        >
+          {text}
+        </Typography>
+        {isHover && (
+          <IconButton
+            sx={{
+              marginRight: '12px',
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        )}
+      </Box>
     </Box>
   );
 };
