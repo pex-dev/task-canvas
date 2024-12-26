@@ -25,13 +25,13 @@ type GetTodosResponse struct {
 
 type PostTodosRequest struct {
 	Content   string `json:"content" validate:"required"`
-	Completed bool   `json:"completed" validate:"required"`
+	Completed bool   `json:"completed"`
 }
 
 type PutTodoRequest struct {
 	Id        string `json:"id" param:"id" validate:"required"`
 	Content   string `json:"content" validate:"required"`
-	Completed bool   `json:"completed" validate:"required"`
+	Completed bool   `json:"completed"`
 }
 
 type PostTodosRequestResponse struct {
