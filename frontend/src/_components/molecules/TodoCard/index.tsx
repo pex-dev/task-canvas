@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import Checkbox from '@/_components/atoms/Checkbox';
 import Box from '@/_components/mui/Box';
+import EditIcon from '@/_components/mui/EditIcon';
 import IconButton from '@/_components/mui/IconButton';
 import Typography from '@/_components/mui/Typography';
-import EditIcon from '@/_components/mui/EditIcon';
 
 export type TodoCardProps = {
   text: string;

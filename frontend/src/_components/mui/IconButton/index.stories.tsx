@@ -1,8 +1,10 @@
 import React from 'react';
+
 import type { Meta, StoryFn } from '@storybook/react';
 
-import IconButton from '.';
 import EditIcon from '../EditIcon';
+
+import IconButton from '.';
 
 const meta = {
   component: IconButton,
