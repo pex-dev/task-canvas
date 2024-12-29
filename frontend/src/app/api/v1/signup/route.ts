@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 type RequestBody = {
-  mail: string;
+  email: string;
   password: string;
 };
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Request body is empty' }, { status: 400 });
   }
 
-  const { mail, password } = body;
+  const { email, password } = body;
 
   try {
     const response = await fetch('http://task_canvas_api:8080/v1/signUp', {
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: mail,
+        email: email,
         password: password,
       }),
       mode: 'cors',
