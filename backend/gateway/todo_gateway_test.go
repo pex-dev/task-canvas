@@ -8,8 +8,11 @@ import (
 	sqlc "task-canvas/driver/generated"
 	mock_db_driver "task-canvas/mock/driver"
 	"testing"
+	"time"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"go.uber.org/mock/gomock"
 )
 
@@ -20,11 +23,12 @@ func TestTodoGateway_Get(t *testing.T) {
 	mockDriver := mock_db_driver.NewMockQuerier(ctrl)
 
 	userId := domain.NewUserId()
+	now := time.Now()
 
 	mockDriver.EXPECT().FindTodo(context.Background(), uuid.UUID(userId)).Return([]sqlc.FindTodoRow{
-		{TodoID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
-		{TodoID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
-		{TodoID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password"},
+		{TodoID: uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954"), Content: "title1", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password", CreatedAt: pgtype.Timestamp{Time: now.Add(-3 * time.Hour), Valid: true}},
+		{TodoID: uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84"), Content: "title2", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password", CreatedAt: pgtype.Timestamp{Time: now, Valid: true}},
+		{TodoID: uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7"), Content: "title3", Completed: true, UserID: uuid.UUID(userId), Email: "test@test.com", PasswordHash: "password", CreatedAt: pgtype.Timestamp{Time: now.Add(+10 * time.Hour), Valid: true}},
 	}, nil)
 
 	type fields struct {
@@ -51,9 +55,9 @@ func TestTodoGateway_Get(t *testing.T) {
 				userId: userId,
 			},
 			want: []domain.Todo{
-				{ID: domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")), Content: "title1", Completed: true, UserId: userId},
-				{ID: domain.TodoId(uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84")), Content: "title2", Completed: true, UserId: userId},
 				{ID: domain.TodoId(uuid.MustParse("10CE7F14-8B10-45C8-87E1-810008AE1ED7")), Content: "title3", Completed: true, UserId: userId},
+				{ID: domain.TodoId(uuid.MustParse("97A46613-0E12-4A7F-B40E-57CF55EEFC84")), Content: "title2", Completed: true, UserId: userId},
+				{ID: domain.TodoId(uuid.MustParse("56CD2629-3035-47EB-AA41-C8F25D5FC954")), Content: "title1", Completed: true, UserId: userId},
 			},
 			wantErr: false,
 		},
@@ -70,6 +74,8 @@ func TestTodoGateway_Get(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TodoGateway.Get() = %v, want %v", got, tt.want)
+				diff := cmp.Diff(got, tt.want)
+				t.Errorf("%s", diff)
 			}
 		})
 	}
