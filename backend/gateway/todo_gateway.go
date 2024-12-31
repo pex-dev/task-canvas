@@ -2,12 +2,15 @@ package gateway
 
 import (
 	"context"
+	"sort"
 	"task-canvas/domain"
 	db_driver "task-canvas/driver"
 	sqlc "task-canvas/driver/generated"
 	"task-canvas/port"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TodoGateway struct {
@@ -26,6 +29,10 @@ func (g *TodoGateway) Get(ctx context.Context, userId domain.UserId) ([]domain.T
 		return nil, err
 	}
 
+	sort.Slice(todos, func(i, j int) bool {
+		return todos[i].CreatedAt.Time.After(todos[j].CreatedAt.Time)
+	})
+
 	res := make([]domain.Todo, 0, len(todos))
 
 	for _, todo := range todos {
@@ -33,7 +40,7 @@ func (g *TodoGateway) Get(ctx context.Context, userId domain.UserId) ([]domain.T
 			ID:        domain.TodoId(todo.TodoID),
 			Content:   domain.TodoContent(todo.Content),
 			Completed: domain.TodoCompleted(todo.Completed),
-			UserId:    domain.UserId(domain.UserId(todo.UserID)),
+			UserId:    domain.UserId(todo.UserID),
 		})
 	}
 
@@ -67,6 +74,7 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 		ID:        uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
+		CreatedAt: pgtype.Timestamp{Time: time.Now(), Valid: true},
 	})
 	if err != nil {
 		return err
