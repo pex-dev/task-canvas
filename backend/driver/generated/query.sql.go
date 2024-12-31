@@ -9,6 +9,7 @@ import (
 	"context"
 
 	uuid "github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const deleteTodo = `-- name: DeleteTodo :exec
@@ -37,6 +38,7 @@ SELECT
   task_canvas.todo.id AS todo_id,
   task_canvas.todo.content AS content,
   task_canvas.todo.completed AS completed,
+  task_canvas.todo.created_at AS created_at,
   task_canvas.user.id AS user_id,
   task_canvas.user.email AS email,
   task_canvas.user.password_hash AS password_hash
@@ -51,12 +53,13 @@ WHERE
 `
 
 type FindTodoRow struct {
-	TodoID       uuid.UUID `json:"todo_id"`
-	Content      string    `json:"content"`
-	Completed    bool      `json:"completed"`
-	UserID       uuid.UUID `json:"user_id"`
-	Email        string    `json:"email"`
-	PasswordHash string    `json:"password_hash"`
+	TodoID       uuid.UUID        `json:"todo_id"`
+	Content      string           `json:"content"`
+	Completed    bool             `json:"completed"`
+	CreatedAt    pgtype.Timestamp `json:"created_at"`
+	UserID       uuid.UUID        `json:"user_id"`
+	Email        string           `json:"email"`
+	PasswordHash string           `json:"password_hash"`
 }
 
 func (q *Queries) FindTodo(ctx context.Context, userID uuid.UUID) ([]FindTodoRow, error) {
@@ -72,6 +75,7 @@ func (q *Queries) FindTodo(ctx context.Context, userID uuid.UUID) ([]FindTodoRow
 			&i.TodoID,
 			&i.Content,
 			&i.Completed,
+			&i.CreatedAt,
 			&i.UserID,
 			&i.Email,
 			&i.PasswordHash,
@@ -126,23 +130,31 @@ const insertTodo = `-- name: InsertTodo :exec
 INSERT INTO task_canvas.todo (
   id,
   content,
-  completed
+  completed,
+  created_at
 )
 VALUES (
   $1::uuid,
   $2::text,
-  $3::boolean
+  $3::boolean,
+  $4::timestamp
 )
 `
 
 type InsertTodoParams struct {
-	ID        uuid.UUID `json:"id"`
-	Content   string    `json:"content"`
-	Completed bool      `json:"completed"`
+	ID        uuid.UUID        `json:"id"`
+	Content   string           `json:"content"`
+	Completed bool             `json:"completed"`
+	CreatedAt pgtype.Timestamp `json:"created_at"`
 }
 
 func (q *Queries) InsertTodo(ctx context.Context, arg InsertTodoParams) error {
-	_, err := q.db.Exec(ctx, insertTodo, arg.ID, arg.Content, arg.Completed)
+	_, err := q.db.Exec(ctx, insertTodo,
+		arg.ID,
+		arg.Content,
+		arg.Completed,
+		arg.CreatedAt,
+	)
 	return err
 }
 

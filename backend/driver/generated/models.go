@@ -6,6 +6,7 @@ package db_driver
 
 import (
 	uuid "github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TaskCanvasTag struct {
@@ -14,9 +15,10 @@ type TaskCanvasTag struct {
 }
 
 type TaskCanvasTodo struct {
-	ID        uuid.UUID `json:"id"`
-	Content   string    `json:"content"`
-	Completed bool      `json:"completed"`
+	ID        uuid.UUID        `json:"id"`
+	Content   string           `json:"content"`
+	Completed bool             `json:"completed"`
+	CreatedAt pgtype.Timestamp `json:"created_at"`
 }
 
 type TaskCanvasTodoTag struct {
