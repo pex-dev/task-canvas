@@ -9,7 +9,8 @@ create table task_canvas.user (
 create table task_canvas.todo (
   id uuid primary key,
   content text not null,
-  completed boolean not null
+  completed boolean not null,
+  created_at timestamp not null
 );
 
 create table task_canvas.user_todo (

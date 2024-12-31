@@ -3,6 +3,7 @@ SELECT
   task_canvas.todo.id AS todo_id,
   task_canvas.todo.content AS content,
   task_canvas.todo.completed AS completed,
+  task_canvas.todo.created_at AS created_at,
   task_canvas.user.id AS user_id,
   task_canvas.user.email AS email,
   task_canvas.user.password_hash AS password_hash
@@ -20,12 +21,14 @@ WHERE
 INSERT INTO task_canvas.todo (
   id,
   content,
-  completed
+  completed,
+  created_at
 )
 VALUES (
   sqlc.arg(id)::uuid,
   sqlc.arg(content)::text,
-  sqlc.arg(completed)::boolean
+  sqlc.arg(completed)::boolean,
+  sqlc.arg(created_at)::timestamp
 );
 
 -- name: InsertUserTodo :exec
