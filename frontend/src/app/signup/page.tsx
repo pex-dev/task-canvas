@@ -65,7 +65,7 @@ const SignUp = () => {
   const router = useRouter();
   const { showError, showSuccess } = useSnackbar();
   const { signUp } = useSignUp();
-  const { control, handleSubmit, resetField } = useForm<InputProps>({
+  const { control, handleSubmit } = useForm<InputProps>({
     defaultValues: {
       email: '',
       password: '',
