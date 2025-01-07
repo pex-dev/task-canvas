@@ -38,6 +38,5 @@
     }
   ],
   "todo-tree.general.tags": ["HACK", "FIXME", "TODO", "NOTE"],
-  "cSpell.words": ["autodocs"],
-  "eslint.workingDirectories": ["./frontend"]
+  "cSpell.words": ["autodocs"]
 }

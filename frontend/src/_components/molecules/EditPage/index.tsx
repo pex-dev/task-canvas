@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Button, { ButtonProps } from '@/_components/atoms/Button';
+import Button from '@/_components/atoms/Button';
 import Box from '@/_components/mui/Box';
 import Dialog from '@/_components/mui/Dialog';
 import TextFiled, { TextFieldProps } from '@/_components/mui/TextField';
