@@ -130,31 +130,23 @@ const insertTodo = `-- name: InsertTodo :exec
 INSERT INTO task_canvas.todo (
   id,
   content,
-  completed,
-  created_at
+  completed
 )
 VALUES (
   $1::uuid,
   $2::text,
-  $3::boolean,
-  $4::timestamp
+  $3::boolean
 )
 `
 
 type InsertTodoParams struct {
-	ID        uuid.UUID        `json:"id"`
-	Content   string           `json:"content"`
-	Completed bool             `json:"completed"`
-	CreatedAt pgtype.Timestamp `json:"created_at"`
+	ID        uuid.UUID `json:"id"`
+	Content   string    `json:"content"`
+	Completed bool      `json:"completed"`
 }
 
 func (q *Queries) InsertTodo(ctx context.Context, arg InsertTodoParams) error {
-	_, err := q.db.Exec(ctx, insertTodo,
-		arg.ID,
-		arg.Content,
-		arg.Completed,
-		arg.CreatedAt,
-	)
+	_, err := q.db.Exec(ctx, insertTodo, arg.ID, arg.Content, arg.Completed)
 	return err
 }
 
