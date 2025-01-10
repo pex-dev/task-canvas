@@ -7,10 +7,8 @@ import (
 	db_driver "task-canvas/driver"
 	sqlc "task-canvas/driver/generated"
 	"task-canvas/port"
-	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TodoGateway struct {
@@ -74,8 +72,8 @@ func (g *TodoGateway) Store(ctx context.Context, todo domain.Todo) error {
 		ID:        uuid.UUID(todo.ID),
 		Content:   string(todo.Content),
 		Completed: bool(todo.Completed),
-		CreatedAt: pgtype.Timestamp{Time: time.Now(), Valid: true},
 	})
+
 	if err != nil {
 		return err
 	}
