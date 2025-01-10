@@ -21,14 +21,12 @@ WHERE
 INSERT INTO task_canvas.todo (
   id,
   content,
-  completed,
-  created_at
+  completed
 )
 VALUES (
   sqlc.arg(id)::uuid,
   sqlc.arg(content)::text,
-  sqlc.arg(completed)::boolean,
-  sqlc.arg(created_at)::timestamp
+  sqlc.arg(completed)::boolean
 );
 
 -- name: InsertUserTodo :exec
