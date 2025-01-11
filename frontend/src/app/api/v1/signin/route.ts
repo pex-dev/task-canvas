@@ -6,6 +6,8 @@ type RequestBody = {
   password: string;
 };
 
+const BASE_URL = process.env.NEXT_BACKEND_BASE_URL;
+
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as RequestBody;
   const cookieStore = await cookies();
@@ -16,7 +18,7 @@ export async function POST(req: NextRequest) {
   const { email, password } = body;
 
   try {
-    const response = await fetch('http://task_canvas_api:8080/v1/signIn', {
+    const response = await fetch(`${BASE_URL}/v1/signIn`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

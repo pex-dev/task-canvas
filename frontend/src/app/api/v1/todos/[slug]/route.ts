@@ -6,6 +6,8 @@ type PutRequestBody = {
   completed: boolean;
 };
 
+const BASE_URL = process.env.NEXT_BACKEND_BASE_URL;
+
 export async function PUT(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
     const body = (await req.json()) as PutRequestBody;
@@ -24,7 +26,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ slug: s
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const response = await fetch(`http://task_canvas_api:8080/v1/todos/${id}`, {
+    const response = await fetch(`${BASE_URL}/v1/todos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
