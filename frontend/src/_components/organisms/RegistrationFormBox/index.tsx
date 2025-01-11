@@ -44,6 +44,7 @@ const RegistrationFormBox = ({
       }}
     >
       <Typography
+        variant="h2"
         sx={{
           mb: 4,
           fontSize: {

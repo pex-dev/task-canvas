@@ -138,7 +138,7 @@ const SignIn = () => {
             disabled={isLoading}
             type="submit"
           >
-            サインアップ
+            サインイン
           </Button>
         )}
       </Stack>
