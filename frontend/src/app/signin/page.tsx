@@ -128,7 +128,12 @@ const SignIn = () => {
           )}
         />
         {isLoading ? (
-          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Box
+            component={'div'}
+            aria-busy={isLoading}
+            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+            id="loading"
+          >
             <CircularProgress size={32} />
           </Box>
         ) : (

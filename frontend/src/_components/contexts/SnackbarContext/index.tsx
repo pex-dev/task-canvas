@@ -61,18 +61,22 @@ export const SnackbarProvider = ({ children }: { children: JSX.Element }) => {
         showSuccess,
       }}
     >
-      <Box sx={{ position: 'absolute', zIndex: 200, top: 10, right: 10 }}>
-        {snackState.map((v) => (
-          <Fragment key={v.id}>
-            <Alert
-              severity={v.type}
-              sx={{ mb: 1 }}
-            >
-              {v.message}
-            </Alert>
-          </Fragment>
-        ))}
-      </Box>
+      {snackState.map((v) => (
+        <Box
+          component="div"
+          role="alert"
+          aria-label={v.message}
+          sx={{ position: 'absolute', zIndex: 200, top: 10, right: 10 }}
+          key={v.id}
+        >
+          <Alert
+            severity={v.type}
+            sx={{ mb: 1 }}
+          >
+            {v.message}
+          </Alert>
+        </Box>
+      ))}
       {children}
     </SnackbarContext.Provider>
   );
