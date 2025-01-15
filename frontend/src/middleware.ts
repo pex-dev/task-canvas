@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+const BASE_URL = process.env.NEXT_BACKEND_BASE_URL;
+
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
 
@@ -8,7 +10,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
-  return fetch('http://task_canvas_api:8080/v1/verifyAuth', {
+  return fetch(`${BASE_URL}/v1/verifyAuth`, {
     method: 'POST',
     headers: {
       Authorization: token.value,
