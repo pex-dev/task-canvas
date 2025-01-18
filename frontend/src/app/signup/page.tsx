@@ -126,7 +126,11 @@ const SignUp = () => {
           )}
         />
         {isLoading ? (
-          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <Box
+            component={'div'}
+            aria-busy={isLoading}
+            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
             <CircularProgress size={32} />
           </Box>
         ) : (
