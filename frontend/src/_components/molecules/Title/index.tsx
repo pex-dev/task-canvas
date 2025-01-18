@@ -28,6 +28,7 @@ const Title: React.FC<TitleProps> = ({ sx, href }) => {
           }}
         />
         <Typography
+          component={'h1'}
           sx={{
             fontSize: '44px',
             color: '#4169e1',
