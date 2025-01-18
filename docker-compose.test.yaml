@@ -6,8 +6,6 @@ services:
       context: ./frontend
     ports:
       - "${NEXT_PORT}:3000"
-    depends_on:
-      - task_canvas_api
     env_file:
       - .env.test
     volumes:
@@ -16,18 +14,6 @@ services:
         target: /task-canvas/frontend
     networks:
       - task_canvas_network
-
-  task_canvas_api:
-    build:
-      context: ./backend
-    volumes:
-      - ./backend:/backend
-    ports:
-      - "${GO_PORT}:8080"
-    networks:
-      - task_canvas_network
-    env_file:
-      - .env
 
 networks:
   task_canvas_network:
