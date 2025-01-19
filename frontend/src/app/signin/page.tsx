@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, forwardRef, ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -12,51 +12,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import { useSnackbar } from '@/_components/contexts/SnackbarContext';
+import TextFieldWithIcon from '@/_components/molecules/TextFieldWithIcon';
 import Box from '@/_components/mui/Box';
 
 import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
-import TextField, { TextFieldProps as TextFieldPropsType } from '@/_components/mui/TextField';
 import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 import useSignIn from '@/hooks/useSignIn';
-
-const TextFieldWithIcon = memo(
-  forwardRef<
-    HTMLDivElement,
-    Pick<
-      TextFieldPropsType,
-      'label' | 'placeholder' | 'error' | 'helperText' | 'value' | 'onChange' | 'type' | 'disabled'
-    > & {
-      icon: ReactNode;
-    }
-  >(({ label, placeholder, icon, value, type, onChange, disabled }, ref) => (
-    <TextField
-      ref={ref}
-      sx={{
-        mb: {
-          xs: 2,
-          sm: 3,
-        },
-      }}
-      label={label}
-      required
-      placeholder={placeholder}
-      InputProps={{
-        startAdornment: icon,
-        sx: {
-          fontSize: {
-            xs: 10,
-            sm: 14,
-          },
-        },
-      }}
-      value={value}
-      onChange={onChange}
-      type={type}
-      disabled={disabled}
-    />
-  )),
-);
 
 type InputProps = {
   email: string;
@@ -101,6 +63,7 @@ const SignIn = () => {
           render={({ field }) => (
             <TextFieldWithIcon
               {...field}
+              name="mail"
               label="メール"
               placeholder="メールを入力してください"
               type="email"
@@ -119,6 +82,7 @@ const SignIn = () => {
           render={({ field }) => (
             <TextFieldWithIcon
               {...field}
+              name="password"
               label="パスワード"
               type="password"
               placeholder="パスワードを入力してください"
