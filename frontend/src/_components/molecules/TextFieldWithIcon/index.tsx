@@ -16,37 +16,48 @@ const TextFieldWithIcon = memo(
       | 'type'
       | 'disabled'
       | 'name'
+      | 'required'
     > & {
       icon: ReactNode;
     }
-  >(({ label, placeholder, icon, value, type, onChange, disabled, name }, ref) => (
-    <TextField
-      ref={ref}
-      sx={{
-        mb: {
-          xs: 2,
-          sm: 3,
-        },
-      }}
-      label={label}
-      name={name}
-      required
-      placeholder={placeholder}
-      InputProps={{
-        startAdornment: icon,
-        sx: {
-          fontSize: {
-            xs: 10,
-            sm: 14,
+  >(
+    (
+      { label, placeholder, helperText, icon, value, type, onChange, disabled, name, required },
+      ref,
+    ) => (
+      <TextField
+        ref={ref}
+        sx={{
+          mb: {
+            xs: 2,
+            sm: 3,
           },
-        },
-      }}
-      value={value}
-      onChange={onChange}
-      type={type}
-      disabled={disabled}
-    />
-  )),
+        }}
+        label={label}
+        name={name}
+        required={required}
+        helperText={helperText}
+        placeholder={placeholder}
+        slotProps={{
+          input: {
+            'aria-invalid': true,
+            startAdornment: icon,
+            sx: {
+              fontSize: {
+                xs: 10,
+                sm: 14,
+              },
+            },
+          },
+        }}
+        value={value}
+        onChange={onChange}
+        type={type}
+        disabled={disabled}
+        error={!!helperText}
+      />
+    ),
+  ),
 );
 
 export default TextFieldWithIcon;

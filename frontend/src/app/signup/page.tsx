@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { memo, forwardRef, ReactNode, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -8,15 +8,15 @@ import LockIcon from '@mui/icons-material/Lock';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller, SubmitErrorHandler } from 'react-hook-form';
 
 import { useSnackbar } from '@/_components/contexts/SnackbarContext';
-import TextFieldWithIcon from '@/_components/molecules/TextFieldWithIcon';
 import Box from '@/_components/mui/Box';
 import Button from '@/_components/mui/Button';
 import Stack from '@/_components/mui/Stack';
 import RegistrationFormBox from '@/_components/organisms/RegistrationFormBox';
 import useSignUp from '@/hooks/useSignUp';
+import TextFieldWithIcon from '@/_components/molecules/TextFieldWithIcon';
 type InputProps = {
   email: string;
   password: string;
@@ -48,6 +48,8 @@ const SignUp = () => {
     }
   };
 
+  const onSubmitError: SubmitErrorHandler<InputProps> = (errors) => {};
+
   return (
     <RegistrationFormBox description="ユーザー情報を入力してください。">
       <Stack
@@ -57,12 +59,14 @@ const SignUp = () => {
         <Controller
           name="email"
           control={control}
+          rules={{ required: 'メールアドレスを入力してください' }}
           render={({ field }) => (
             <TextFieldWithIcon
               {...field}
               label="メール"
               placeholder="メールを入力してください"
               type="email"
+              required
               disabled={isLoading}
               icon={
                 <MailOutlineIcon

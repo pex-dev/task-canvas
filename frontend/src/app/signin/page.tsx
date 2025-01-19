@@ -29,13 +29,18 @@ const SignIn = () => {
   const router = useRouter();
   const { signIn } = useSignIn();
   const { showError, showSuccess } = useSnackbar();
-  const { control, handleSubmit } = useForm<InputProps>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<InputProps>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  console.log(errors.password);
 
   const onSubmit: SubmitHandler<InputProps> = async (values) => {
     try {
@@ -60,13 +65,16 @@ const SignIn = () => {
         <Controller
           name="email"
           control={control}
-          render={({ field }) => (
+          rules={{ required: 'メールアドレスを入力してください' }}
+          render={({ field, formState: { errors } }) => (
             <TextFieldWithIcon
               {...field}
+              error={errors.email ? true : false}
               name="mail"
               label="メール"
               placeholder="メールを入力してください"
               type="email"
+              helperText={errors.email ? errors.email.message : ''}
               disabled={isLoading}
               icon={
                 <MailOutlineIcon
@@ -79,14 +87,17 @@ const SignIn = () => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => (
+          rules={{ required: 'パスワードを入力してください' }}
+          render={({ field, formState: { errors } }) => (
             <TextFieldWithIcon
               {...field}
+              error={errors.password ? true : false}
               name="password"
               label="パスワード"
               type="password"
               placeholder="パスワードを入力してください"
               disabled={isLoading}
+              helperText={errors.password ? errors.password.message : ''}
               icon={<LockIcon sx={{ color: 'icon.blue', height: 20, wight: 20, marginRight: 1 }} />}
             />
           )}
