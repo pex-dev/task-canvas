@@ -30,19 +30,27 @@ export const createTodo = async ({
   content,
   completed,
 }: CreateDriverRequest): Promise<CreateTodoResult> => {
-  const response = await fetch('http://localhost:3000/api/v1/todos', {
-    method: 'POST',
-    body: JSON.stringify({
-      content: content,
-      completed: completed,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    const response = await fetch('http://localhost:3000/api/v1/todos', {
+      method: 'POST',
+      body: JSON.stringify({
+        content: content,
+        completed: completed,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  const json = await response.json();
-  return json.id;
+    if (response.status >= 400) {
+      throw new Error('Failed to create todo');
+    }
+
+    const json = await response.json();
+    return json.id;
+  } catch {
+    throw new Error('Failed to create todo');
+  }
 };
 
 export const updateTodoDriver = async ({
