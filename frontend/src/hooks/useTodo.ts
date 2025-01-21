@@ -8,9 +8,11 @@ import { updateTodo as updateTodoUseCase } from '@/useCase/updateTodoUseCase';
 export const useTodo = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  const addTodo = (content: Todo['content']) => {
-    createTodo(content).then((result) => {
-      setTodos([...todos, result]);
+  const addTodo = async (content: Todo['content']): Promise<void> => {
+    const result = await createTodo(content);
+
+    setTodos((prev) => {
+      return [...prev, result];
     });
   };
 
