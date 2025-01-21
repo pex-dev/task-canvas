@@ -1,36 +1,45 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useRouter } from 'next/navigation';
 
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+
 import Button from '@/_components/atoms/Button';
-import Input, { InputProps } from '@/_components/atoms/Input';
+import Input from '@/_components/atoms/Input';
+import { useSnackbar } from '@/_components/contexts/SnackbarContext';
 import Title from '@/_components/molecules/Title';
 import TodoCard from '@/_components/molecules/TodoCard';
 import Box from '@/_components/mui/Box';
 import Calender from '@/_components/mui/Calendar';
 import Container from '@/_components/mui/Container';
+import Stack from '@/_components/mui/Stack';
 import { Todo } from '@/domain/todo';
 import useSignOut from '@/hooks/useSignOut';
 import { useTodo } from '@/hooks/useTodo';
 
+type TodoFormProps = {
+  content: string;
+};
+
 const Top = () => {
   const router = useRouter();
-  const [value, setValue] = useState<string>('');
   const { todos, addTodo, updateTodo } = useTodo();
+  const { showError } = useSnackbar();
+  const { control, handleSubmit, reset } = useForm<TodoFormProps>({
+    defaultValues: {
+      content: '',
+    },
+  });
   const { signOut } = useSignOut();
 
-  const handleChangeText: InputProps['onChange'] = (event) => {
-    const inputText = event.target.value;
-    if (inputText.length > 40) return;
-    setValue(inputText);
-  };
-
-  const handleCreateTodo = (value: string) => {
-    addTodo(value);
-
-    setValue('');
+  const createTodo: SubmitHandler<TodoFormProps> = async (todoForm) => {
+    try {
+      await addTodo(todoForm.content);
+      reset();
+    } catch (error) {
+      showError('タスクの追加に失敗しました');
+      console.error(error);
+    }
   };
 
   const handleChangeCheckbox = (
@@ -94,28 +103,48 @@ const Top = () => {
               marginBottom: 3,
             }}
           >
-            <Input
-              value={value}
-              onChange={handleChangeText}
-            />
-            <Calender
-              sx={{
-                position: 'absolute',
-                top: '15px',
-                right: '90px',
-              }}
-            />
-            <Button
-              sx={{
-                position: 'absolute',
-                top: '10px',
-                right: '20px',
-              }}
-              disabled={!value}
-              onClick={() => handleCreateTodo(value)}
+            <Stack
+              component={'form'}
+              onSubmit={handleSubmit(createTodo)}
             >
-              Add
-            </Button>
+              <Controller
+                name="content"
+                control={control}
+                rules={{
+                  required: 'タスクを入力してください',
+                  validate: (value) => {
+                    return value.length <= 40 || '40文字以内で入力してください';
+                  },
+                }}
+                render={({ field, formState: { errors, isValid } }) => (
+                  <>
+                    <Input
+                      {...field}
+                      error={errors.content ? true : false}
+                      helperText={errors.content ? errors.content.message : ''}
+                    />
+                    <Calender
+                      sx={{
+                        position: 'absolute',
+                        top: '15px',
+                        right: '90px',
+                      }}
+                    />
+                    <Button
+                      type="submit"
+                      sx={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '20px',
+                      }}
+                      disabled={!isValid}
+                    >
+                      Add
+                    </Button>
+                  </>
+                )}
+              />
+            </Stack>
           </Box>
           <Box
             sx={{
