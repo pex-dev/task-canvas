@@ -9,7 +9,7 @@ require (
 
 require (
 	github.com/agiledragon/gomonkey/v2 v2.13.0
-	github.com/go-playground/validator/v10 v10.24.0
+	github.com/go-playground/validator/v10 v10.25.0
 )
 
 require (
